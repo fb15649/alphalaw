@@ -71,12 +71,12 @@ T = {
               "while systems without reserve show diminishing returns (α < 1).\n\n"
               "- **Paper**: Reserve Law of Chemical Bonding (Y. Kazin, 2026)\n"
               "- **Code**: `pip install alphalaw`\n"
-              "- **Contact**: y.kazin@kazin.ru",
+              "- **Contact**: yuri@kazin.ru",
         "ru": "**Закон Резерва** гласит: системы с рекрутируемым резервом показывают синергию (α > 1), "
               "а без резерва — убывающую отдачу (α < 1).\n\n"
               "- **Статья**: Закон Резерва химической связи (Ю. Казин, 2026)\n"
               "- **Код**: `pip install alphalaw`\n"
-              "- **Контакт**: y.kazin@kazin.ru",
+              "- **Контакт**: yuri@kazin.ru",
     },
 }
 
