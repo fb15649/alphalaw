@@ -13,7 +13,8 @@ def get_bond(elem1: str, elem2: str) -> Optional[BondData]:
 
 
 def compute_alpha(energies: dict[int, float]) -> Optional[float]:
-    """Compute α from a dict of {bond_order: energy_kJ_mol}."""
+    """Compute α from a dict of {bond_order: energy_kJ_mol}.
+    Uses OLS forced through origin: log(E/E₁) = α × log(n)."""
     orders = sorted(energies.keys())
     if len(orders) < 2:
         return None
@@ -23,11 +24,11 @@ def compute_alpha(energies: dict[int, float]) -> Optional[float]:
     if len(orders) == 2:
         n1, n2 = orders
         return math.log(energies[n2] / energies[n1]) / math.log(n2 / n1)
-    from scipy import stats
-    log_n = [math.log(n / orders[0]) for n in orders[1:]]
-    log_ratio = [math.log(energies[n] / E1) for n in orders[1:]]
-    slope, _, _, _, _ = stats.linregress(log_n, log_ratio)
-    return slope
+    x = [math.log(n / orders[0]) for n in orders[1:]]
+    y = [math.log(energies[n] / E1) for n in orders[1:]]
+    sum_xy = sum(xi * yi for xi, yi in zip(x, y))
+    sum_xx = sum(xi * xi for xi in x)
+    return sum_xy / sum_xx if sum_xx > 0 else None
 
 
 def morse_predict_alpha(omega_e: float, omega_e_xe: float, LP: int) -> float:

@@ -26,6 +26,7 @@ class BondData:
 
     @property
     def alpha(self) -> Optional[float]:
+        """Compute α from E(n) = E₁ × n^α using OLS forced through origin."""
         orders = sorted(self.energies.keys())
         if len(orders) < 2:
             return None
@@ -38,11 +39,13 @@ class BondData:
             if E_n1 <= 0 or E_n2 <= 0:
                 return None
             return math.log(E_n2 / E_n1) / math.log(n2 / n1)
-        from scipy import stats
-        log_n = [math.log(n / orders[0]) for n in orders[1:]]
-        log_ratio = [math.log(self.energies[n] / E1) for n in orders[1:]]
-        slope, _, _, _, _ = stats.linregress(log_n, log_ratio)
-        return slope
+        # 3+ points: OLS forced through origin (no intercept)
+        # log(E_n/E₁) = α × log(n) → α = Σ(x·y) / Σ(x²)
+        x = [math.log(n / orders[0]) for n in orders[1:]]
+        y = [math.log(self.energies[n] / E1) for n in orders[1:]]
+        sum_xy = sum(xi * yi for xi, yi in zip(x, y))
+        sum_xx = sum(xi * xi for xi in x)
+        return sum_xy / sum_xx if sum_xx > 0 else None
 
     @property
     def LP_min(self) -> int:
@@ -92,6 +95,21 @@ SP_BONDS = [
     _b("C-S",   "s/p", 3, "C",  "S",  4, 6, 0, 2, {1:272, 2:573},            "CRC"),
     _b("C-P",   "s/p", 3, "C",  "P",  4, 5, 0, 1, {1:264, 2:513},            "CRC"),
     _b("Ge-O",  "s/p", 4, "Ge", "O",  4, 6, 0, 2, {1:401, 2:575},            "CRC"),
+    _b("As-As", "s/p", 4, "As", "As", 5, 5, 1, 1, {1:146, 2:382},            "CRC"),
+    _b("Se-Se", "s/p", 4, "Se", "Se", 6, 6, 2, 2, {1:172, 2:272},            "CRC"),
+    _b("Te-Te", "s/p", 5, "Te", "Te", 6, 6, 2, 2, {1:138, 2:222},            "CRC"),
+    _b("B-C",   "s/p", 2, "B",  "C",  3, 4, 0, 0, {1:372, 2:590},            "CRC"),
+    _b("N-S",   "s/p", 3, "N",  "S",  5, 6, 1, 2, {1:159, 2:467},            "CRC"),
+    _b("P-O",   "s/p", 3, "P",  "O",  5, 6, 1, 2, {1:335, 2:544},            "CRC"),
+    _b("S-O",   "s/p", 3, "S",  "O",  6, 6, 2, 2, {1:265, 2:522},            "CRC"),
+    _b("P-S",   "s/p", 3, "P",  "S",  5, 6, 1, 2, {1:230, 2:335},            "CRC"),
+    _b("F-F",   "s/p", 2, "F",  "F",  7, 7, 3, 3, {1:158},                   "CRC", 916.6, 11.24),
+    _b("Cl-Cl", "s/p", 3, "Cl", "Cl", 7, 7, 3, 3, {1:242},                   "CRC", 559.7, 2.67),
+    _b("Br-Br", "s/p", 4, "Br", "Br", 7, 7, 3, 3, {1:193},                   "CRC"),
+    _b("I-I",   "s/p", 5, "I",  "I",  7, 7, 3, 3, {1:151},                   "CRC"),
+    _b("Ti-O",  "d",   4, "Ti", "O",  4, 6,-1, 2, {1:672},                   "CRC"),
+    _b("Fe-C",  "d",   4, "Fe", "C",  8, 4,-1, 0, {1:394},                   "CRC; Brugh & Morse 2002"),
+    _b("W-C",   "d",   6, "W",  "C",  6, 4,-1, 0, {1:639},                   "CRC"),
 ]
 
 # ============================================================
