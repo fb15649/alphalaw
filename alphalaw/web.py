@@ -59,6 +59,12 @@ T = {
         "en": "**Statistics:**\n- LP=0 → α<1: 93% (13/14)\n- LP≥1 → α>1: 80% (4/5)\n- d-block → α<1: 100% (4/4)",
         "ru": "**Статистика:**\n- LP=0 → α<1: 93% (13/14)\n- LP≥1 → α>1: 80% (4/5)\n- d-блок → α<1: 100% (4/4)",
     },
+    "estimated_tag": {"en": "ESTIMATED", "ru": "ОЦЕНКА"},
+    "confidence": {"en": "Confidence", "ru": "Уверенность"},
+    "est_note": {
+        "en": "No measured data — prediction based on LP + period heuristic",
+        "ru": "Нет измеренных данных — предсказание по LP + период",
+    },
     "about_title": {"en": "About", "ru": "О проекте"},
     "about": {
         "en": "The **Reserve Law** states that systems with recruitable reserve show cooperative scaling (α > 1), "
@@ -122,7 +128,56 @@ BONDS = {
 def lookup(e1, e2):
     return BONDS.get((e1, e2)) or BONDS.get((e2, e1))
 
-ALL_ELEMENTS = sorted(set(e for pair in BONDS for e in pair))
+# Estimation for elements not in BONDS
+ELEMENTS = {
+    "H":(1,1,"s",1,0),"He":(1,18,"s",2,1),"Li":(2,1,"s",1,0),"Be":(2,2,"s",2,0),
+    "B":(2,13,"s/p",3,0),"C":(2,14,"s/p",4,0),"N":(2,15,"s/p",5,1),"O":(2,16,"s/p",6,2),
+    "F":(2,17,"s/p",7,3),"Na":(3,1,"s",1,0),"Mg":(3,2,"s",2,0),"Al":(3,13,"s/p",3,0),
+    "Si":(3,14,"s/p",4,0),"P":(3,15,"s/p",5,1),"S":(3,16,"s/p",6,2),"Cl":(3,17,"s/p",7,3),
+    "K":(4,1,"s",1,0),"Ca":(4,2,"s",2,0),"Sc":(4,3,"d",3,-1),"Ti":(4,4,"d",4,-1),
+    "V":(4,5,"d",5,-1),"Cr":(4,6,"d",6,-1),"Mn":(4,7,"d",7,-1),"Fe":(4,8,"d",8,-1),
+    "Co":(4,9,"d",9,-1),"Ni":(4,10,"d",10,-1),"Cu":(4,11,"d",11,-1),"Zn":(4,12,"d",12,-1),
+    "Ga":(4,13,"s/p",3,0),"Ge":(4,14,"s/p",4,0),"As":(4,15,"s/p",5,1),"Se":(4,16,"s/p",6,2),
+    "Br":(4,17,"s/p",7,3),"Rb":(5,1,"s",1,0),"Sr":(5,2,"s",2,0),"Y":(5,3,"d",3,-1),
+    "Zr":(5,4,"d",4,-1),"Nb":(5,5,"d",5,-1),"Mo":(5,6,"d",6,-1),"Ru":(5,8,"d",8,-1),
+    "Rh":(5,9,"d",9,-1),"Pd":(5,10,"d",10,-1),"Ag":(5,11,"d",11,-1),"Cd":(5,12,"d",12,-1),
+    "In":(5,13,"s/p",3,0),"Sn":(5,14,"s/p",4,0),"Sb":(5,15,"s/p",5,1),"Te":(5,16,"s/p",6,2),
+    "I":(5,17,"s/p",7,3),"Cs":(6,1,"s",1,0),"Ba":(6,2,"s",2,0),"La":(6,3,"d",3,-1),
+    "Hf":(6,4,"d",4,-1),"Ta":(6,5,"d",5,-1),"W":(6,6,"d",6,-1),"Re":(6,7,"d",7,-1),
+    "Os":(6,8,"d",8,-1),"Ir":(6,9,"d",9,-1),"Pt":(6,10,"d",10,-1),"Au":(6,11,"d",11,-1),
+    "Hg":(6,12,"d",12,-1),"Tl":(6,13,"s/p",3,0),"Pb":(6,14,"s/p",4,0),"Bi":(6,15,"s/p",5,1),
+    "U":(7,3,"f",3,-1),"Th":(7,4,"f",4,-1),
+}
+
+def estimate(e1, e2):
+    if e1 not in ELEMENTS or e2 not in ELEMENTS:
+        return None
+    p1,_,blk1,_,lp1 = ELEMENTS[e1]
+    p2,_,blk2,_,lp2 = ELEMENTS[e2]
+    period = max(p1, p2)
+    lp_min = min(lp1, lp2) if lp1 >= 0 and lp2 >= 0 else -1
+    is_d = blk1 == "d" or blk2 == "d"
+    is_f = blk1 == "f" or blk2 == "f"
+    if is_f:
+        return 0.5, "low", lp_min, "f", "f-block: rough estimate"
+    if is_d:
+        a = {4: 0.65, 5: 0.72, 6: 0.85}.get(period, 0.7)
+        return a, "medium", lp_min, "d", "d-block: δ-overhead"
+    if lp_min == 0:
+        a = {2: 0.82, 3: 0.48, 4: 0.41, 5: 0.33, 6: 0.28}.get(period, 0.35)
+        return a, "high", lp_min, "s/p", f"LP=0, Period {period}"
+    if lp_min >= 1 and period == 2:
+        a = {1: 1.55, 2: 1.77}.get(lp_min, 1.6)
+        return a, "high", lp_min, "s/p", f"LP={lp_min}, Period 2: synergy"
+    if lp_min >= 1 and period == 3:
+        a = 1.1 if lp_min == 1 else 0.7
+        return a, "medium", lp_min, "s/p", f"LP={lp_min}, Period 3"
+    a = 0.65
+    return a, "medium", lp_min, "s/p", f"LP={lp_min}, Period {period}"
+
+ALL_ELEMENTS = sorted(set(
+    list(e for pair in BONDS for e in pair) + list(ELEMENTS.keys())
+))
 
 # ── Language selector ───────────────────────────────────────────────────
 
@@ -149,12 +204,21 @@ with col1:
     elem2 = st.selectbox(t("elem2"), ALL_ELEMENTS, index=ALL_ELEMENTS.index("C"))
 
     data = lookup(elem1, elem2)
+    is_estimated = False
 
-    if data is None:
-        st.error(f"{t('no_data')} {elem1}-{elem2}")
-    else:
+    if data is not None:
         alpha, beta, lp_min, block, energies, source = data
+    else:
+        est = estimate(elem1, elem2)
+        if est is None:
+            st.error(f"{t('no_data')} {elem1}-{elem2}")
+            alpha = None
+        else:
+            alpha, conf, lp_min, block, reason = est
+            beta, energies, source = 0, {}, reason
+            is_estimated = True
 
+    if alpha is not None:
         if alpha > 1:
             color = "🟢"
             regime = t("synergy")
@@ -162,10 +226,14 @@ with col1:
             color = "🔴"
             regime = t("diminishing")
 
+        tag = f" `[{t('estimated_tag')}]`" if is_estimated else ""
         beta_str = f", β = {beta:+.3f}" if abs(beta) > 0.01 else ""
-        st.markdown(f"### {color} {elem1}-{elem2}: α = {alpha:.3f}{beta_str}\n**{t('regime')}**: {regime}")
+        st.markdown(f"### {color} {elem1}-{elem2}: α = {alpha:.3f}{beta_str}{tag}\n"
+                    f"**{t('regime')}**: {regime}")
 
-        if block == "s/p":
+        if is_estimated:
+            st.warning(f"📊 {t('est_note')}\n\n**{t('confidence')}**: {conf} | {reason}")
+        elif block == "s/p":
             if lp_min == 0:
                 st.info(t("lp0"))
             elif lp_min >= 1:
@@ -173,10 +241,11 @@ with col1:
         else:
             st.warning(t("dblock"))
 
-        st.caption(f"{t('source')}: {source}")
+        if not is_estimated:
+            st.caption(f"{t('source')}: {source}")
 
 with col2:
-    if data is not None:
+    if alpha is not None and energies and len(energies) >= 2:
         alpha, beta, lp_min, block, energies, source = data
         orders = sorted(energies.keys())
         E1 = energies[orders[0]]
