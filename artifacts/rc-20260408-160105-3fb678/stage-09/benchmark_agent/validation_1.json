@@ -1,0 +1,37 @@
+{
+  "passed": false,
+  "errors": [
+    "CRITICAL: num_classes mismatch between data and models. The data loading code correctly maps MMLU labels to 4 classes (A=0, B=1, C=2, D=3), but get_baselines() docstring and example call use num_classes=57 (which is the number of MMLU subjects, not answer choices). This creates a model with 57 output neurons vs 4-class labels, causing suboptimal or broken training.",
+    "CRITICAL: Wrong LoRA target_modules for the chosen base model (google/flan-t5-base). T5 attention projections are named 'q', 'k', 'v' — not 'q_proj' and 'v_proj' (which are LLaMA-style names). This means LoRA adapters will either fail to attach to any module or throw an error. Should use target_modules=['q', 'v'] for T5.",
+    "WARNING: AutoModelForSequenceClassification with T5 is a suboptimal choice for multiple-choice QA. T5 is an encoder-decoder model; a more natural fit would be AutoModelForMultipleChoice or using the generative head directly. Sequence classification forces a single-label setup that doesn't leverage T5's strengths.",
+    "WARNING: prepare_model_for_kbit_training is deprecated in newer PEFT versions. The recommended approach is to pass prepare_model_for_kbit_training kwargs directly to get_peft_model via the prepare_model_for_kbit_training parameter.",
+    "MINOR: DATA_CONFIG hardcodes 'cache_dir': '/workspace/data/hf' while get_datasets() dynamically constructs the path from data_root. The config value is never used and could be misleading."
+  ],
+  "warnings": [],
+  "severity": "error",
+  "llm_review": {
+    "passed": false,
+    "issues": [
+      "CRITICAL: num_classes mismatch between data and models. The data loading code correctly maps MMLU labels to 4 classes (A=0, B=1, C=2, D=3), but get_baselines() docstring and example call use num_classes=57 (which is the number of MMLU subjects, not answer choices). This creates a model with 57 output neurons vs 4-class labels, causing suboptimal or broken training.",
+      "CRITICAL: Wrong LoRA target_modules for the chosen base model (google/flan-t5-base). T5 attention projections are named 'q', 'k', 'v' — not 'q_proj' and 'v_proj' (which are LLaMA-style names). This means LoRA adapters will either fail to attach to any module or throw an error. Should use target_modules=['q', 'v'] for T5.",
+      "WARNING: AutoModelForSequenceClassification with T5 is a suboptimal choice for multiple-choice QA. T5 is an encoder-decoder model; a more natural fit would be AutoModelForMultipleChoice or using the generative head directly. Sequence classification forces a single-label setup that doesn't leverage T5's strengths.",
+      "WARNING: prepare_model_for_kbit_training is deprecated in newer PEFT versions. The recommended approach is to pass prepare_model_for_kbit_training kwargs directly to get_peft_model via the prepare_model_for_kbit_training parameter.",
+      "MINOR: DATA_CONFIG hardcodes 'cache_dir': '/workspace/data/hf' while get_datasets() dynamically constructs the path from data_root. The config value is never used and could be misleading."
+    ],
+    "suggestions": [
+      "Fix num_classes to 4 in get_baselines() and update the docstring: 'num_classes: Number of output classes (4 for MMLU: A, B, C, D).'",
+      "Change target_modules to ['q', 'v'] for T5-based models, or switch the base model to a LLaMA-family model where 'q_proj'/'v_proj' are correct.",
+      "Consider using AutoModelForMultipleChoice instead of AutoModelForSequenceClassification for proper multiple-choice handling, or use a causal LM with answer-token likelihood scoring.",
+      "Remove the unused 'cache_dir' key from DATA_CONFIG or make it dynamic.",
+      "Add an assertion or validation in get_baselines() that num_classes matches DATA_CONFIG['num_classes'] to catch mismatches at initialization time."
+    ],
+    "severity": "error"
+  },
+  "suggestions": [
+    "Fix num_classes to 4 in get_baselines() and update the docstring: 'num_classes: Number of output classes (4 for MMLU: A, B, C, D).'",
+    "Change target_modules to ['q', 'v'] for T5-based models, or switch the base model to a LLaMA-family model where 'q_proj'/'v_proj' are correct.",
+    "Consider using AutoModelForMultipleChoice instead of AutoModelForSequenceClassification for proper multiple-choice handling, or use a causal LM with answer-token likelihood scoring.",
+    "Remove the unused 'cache_dir' key from DATA_CONFIG or make it dynamic.",
+    "Add an assertion or validation in get_baselines() that num_classes matches DATA_CONFIG['num_classes'] to catch mismatches at initialization time."
+  ]
+}

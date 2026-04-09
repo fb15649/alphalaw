@@ -1,0 +1,6 @@
+{
+  "code_complexity_warnings": [
+    "[config.py] Filename shadows stdlib/pip package 'config'. Rename to e.g. 'config_config.py' or 'experiment_config.py' to avoid import collisions at runtime.",
+    "[REPAIR] Deep repair fixed 1/1 critical issues"
+  ]
+}

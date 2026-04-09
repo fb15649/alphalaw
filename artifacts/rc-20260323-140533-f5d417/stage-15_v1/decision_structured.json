@@ -1,0 +1,6 @@
+{
+  "decision": "pivot",
+  "raw_text_excerpt": "## Decision\n**PIVOT**\n\n## Justification\nThis experiment cannot be salvaged through incremental refinement. While the immediate symptom is \"few seeds\" (n=1 instead of 5), the analysis reveals fundamental methodological flaws that no amount of re-running will fix:\n\n1. **Metric-physics disconnect**: The primary metric is a unitless 0-1 value with no physical interpretation. It cannot answer questions about aether density, viscosity, or gravitational wave dispersion.\n\n2. **No physical data**: The ex",
+  "quality_warnings": [],
+  "generated": "2026-03-23T22:57:51+00:00"
+}

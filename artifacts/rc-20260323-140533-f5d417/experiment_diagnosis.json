@@ -1,0 +1,37 @@
+{
+  "diagnosis": {
+    "deficiencies": [
+      {
+        "type": "few_seeds",
+        "severity": "minor",
+        "description": "1 condition(s) have only 1 seed (no variance estimate).",
+        "affected_conditions": [
+          "Proving_proposed"
+        ],
+        "suggested_fix": "Increase seeds to at least 2 per condition, or reduce epoch count to fit time budget.",
+        "error_message": ""
+      }
+    ],
+    "repairable": true,
+    "reason": "",
+    "summary": "1 deficiency(ies) found. 3/0 conditions completed. Repairable: True.",
+    "conditions_completed": [
+      "Proving_baseline_1",
+      "Proving_baseline_2",
+      "Proving_proposed"
+    ],
+    "conditions_failed": [],
+    "total_planned": 0,
+    "completion_rate": 3.0
+  },
+  "quality_assessment": {
+    "mode": "preliminary_study",
+    "sufficient": false,
+    "repair_possible": true,
+    "deficiency_types": [
+      "few_seeds"
+    ]
+  },
+  "repair_needed": true,
+  "generated": "2026-03-23T22:57:07+00:00"
+}

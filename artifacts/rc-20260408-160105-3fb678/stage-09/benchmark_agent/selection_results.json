@@ -1,0 +1,59 @@
+{
+  "selected_benchmarks": [
+    {
+      "name": "MMLU",
+      "tier": 2,
+      "domain": "general_knowledge",
+      "size_mb": 12,
+      "classes": 57,
+      "metrics": [
+        "accuracy"
+      ],
+      "api": "datasets.load_dataset('cais/mmlu', 'all', cache_dir='/workspace/data/hf')",
+      "source_domain": "llm_finetuning",
+      "origin": "knowledge_base",
+      "role": "primary"
+    }
+  ],
+  "selected_baselines": [
+    {
+      "name": "Full Fine-Tuning",
+      "source": "Standard supervised fine-tuning on all parameters",
+      "paper": "Baseline approach",
+      "pip": [
+        "transformers"
+      ],
+      "source_domain": "llm_finetuning",
+      "origin": "knowledge_base"
+    },
+    {
+      "name": "LoRA",
+      "source": "peft.LoraConfig(r=16, lora_alpha=32, target_modules=['q_proj', 'v_proj'])",
+      "paper": "Hu et al., LoRA, ICLR 2022",
+      "pip": [
+        "peft"
+      ],
+      "source_domain": "llm_finetuning",
+      "origin": "knowledge_base"
+    },
+    {
+      "name": "QLoRA",
+      "source": "BitsAndBytesConfig(load_in_4bit=True) + LoRA",
+      "paper": "Dettmers et al., QLoRA, NeurIPS 2023",
+      "pip": [
+        "peft",
+        "bitsandbytes"
+      ],
+      "source_domain": "llm_finetuning",
+      "origin": "knowledge_base"
+    }
+  ],
+  "required_pip": [
+    "transformers",
+    "peft",
+    "bitsandbytes"
+  ],
+  "rationale": "IMPORTANT CAVEAT: The provided benchmarks and baselines are fundamentally mismatched with this research topic. This research concerns computational materials science, crystallography, and theoretical physics (correlating vortex topology with material properties). Proper benchmarks would be Materials Project, OQMD, AFLOW, or ICSD datasets for crystal property prediction. Proper baselines would be CGCNN, SchNet, MEGNet, or DFT-based methods. Among available options, MMLU is selected as primary only because it includes physics/chemistry subsections that could tangentially test domain knowledge relevant to the theoretical framework. The LLM fine-tuning baselines (LoRA, QLoRA, Full Fine-Tuning) are included only to fulfill the requirement, but they are training methodologies, not competing scientific approaches. This research requires: (1) crystal structure databases with magnetic/electronic property labels, (2) computational physics baselines like Faddeev-Niemi soliton models, DFT calculations, or existing ML models for material property prediction. Strong recommendation: obtain Materials Project or NOMAD datasets and implement CGCNN/MEGNet as true baselines.",
+  "experiment_notes": "The current benchmark/baseline pool is designed for NLP tasks and is inappropriate for this materials science research. For actual validation of the vortex geometry hypothesis, you need: (1) Crystal structure data with symmetry group labels (space groups 1-230), (2) Material property databases (magnetic susceptibility, conductivity, hardness), (3) Quasicrystal datasets with icosahedral symmetry markers. Consider using pymatgen/Materials Project API for data collection. Statistical analysis should compare predicted property correlations from vortex topology classifications against measured properties. For the Platonic solid mapping, you'll need computational geometry tools to identify symmetry subgroups in crystal structures. Time budget of 300s is insufficient for meaningful materials science experiments - this typically requires hours of DFT calculations or ML training on crystal graphs.",
+  "total_filtered": 3
+}

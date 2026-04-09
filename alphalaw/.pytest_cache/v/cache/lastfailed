@@ -1,0 +1,7 @@
+{
+  "tests/test_calculator.py::TestAlpha::test_nn_alpha": true,
+  "tests/test_calculator.py::TestAlpha::test_momo_alpha": true,
+  "tests/test_calculator.py::TestReserveLaw::test_lp1_alpha_gt1": true,
+  "tests/test_calculator.py::TestReserveLaw::test_d_block_all_lt1": true,
+  "tests/test_calculator.py::TestPredict::test_predict_nn": true
+}

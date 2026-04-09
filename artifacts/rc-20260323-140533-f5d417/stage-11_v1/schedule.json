@@ -1,0 +1,153 @@
+{
+  "tasks": [
+    {
+      "id": "t1",
+      "name": "data_prep_primary_dataset",
+      "depends_on": [],
+      "gpu_count": 1,
+      "estimated_minutes": 15,
+      "priority": 1
+    },
+    {
+      "id": "t2",
+      "name": "data_prep_secondary_dataset",
+      "depends_on": [],
+      "gpu_count": 1,
+      "estimated_minutes": 10,
+      "priority": 1
+    },
+    {
+      "id": "t3",
+      "name": "baseline_Proving_baseline_1_primary",
+      "depends_on": [
+        "t1"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 20,
+      "priority": 2
+    },
+    {
+      "id": "t4",
+      "name": "baseline_Proving_baseline_2_primary",
+      "depends_on": [
+        "t1"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 20,
+      "priority": 2
+    },
+    {
+      "id": "t5",
+      "name": "baseline_Proving_baseline_1_secondary",
+      "depends_on": [
+        "t2"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 15,
+      "priority": 2
+    },
+    {
+      "id": "t6",
+      "name": "baseline_Proving_baseline_2_secondary",
+      "depends_on": [
+        "t2"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 15,
+      "priority": 2
+    },
+    {
+      "id": "t7",
+      "name": "proposed_Proving_proposed_primary",
+      "depends_on": [
+        "t1"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 30,
+      "priority": 3
+    },
+    {
+      "id": "t8",
+      "name": "proposed_Proving_variant_primary",
+      "depends_on": [
+        "t1"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 30,
+      "priority": 3
+    },
+    {
+      "id": "t9",
+      "name": "proposed_Proving_proposed_secondary",
+      "depends_on": [
+        "t2"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 25,
+      "priority": 3
+    },
+    {
+      "id": "t10",
+      "name": "proposed_Proving_variant_secondary",
+      "depends_on": [
+        "t2"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 25,
+      "priority": 3
+    },
+    {
+      "id": "t11",
+      "name": "ablation_without_key_component",
+      "depends_on": [
+        "t7",
+        "t8"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 20,
+      "priority": 4
+    },
+    {
+      "id": "t12",
+      "name": "ablation_simplified_version",
+      "depends_on": [
+        "t7",
+        "t8"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 20,
+      "priority": 4
+    },
+    {
+      "id": "t13",
+      "name": "metrics_aggregation_primary_metric",
+      "depends_on": [
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7",
+        "t8",
+        "t9",
+        "t10",
+        "t11",
+        "t12"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 10,
+      "priority": 5
+    },
+    {
+      "id": "t14",
+      "name": "metrics_aggregation_secondary_metric",
+      "depends_on": [
+        "t13"
+      ],
+      "gpu_count": 1,
+      "estimated_minutes": 5,
+      "priority": 5
+    }
+  ],
+  "total_gpu_budget": 1,
+  "generated": "2026-03-23T15:04:15+00:00"
+}

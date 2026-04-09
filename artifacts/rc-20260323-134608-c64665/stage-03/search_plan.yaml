@@ -1,0 +1,178 @@
+deliverables:
+- Annotated bibliography (BibTeX + notes)
+- Concept map of theoretical approaches
+- Experimental bounds comparison table
+- Gap analysis document
+execution_timeline:
+  phase_1_week_1-2:
+  - Broad keyword search across all databases
+  - Snowball citation following from top 10 papers
+  phase_2_week_3-4:
+  - Targeted search for specific derivations
+  - Historical aether literature review
+  phase_3_week_5-6:
+  - Experimental paper retrieval
+  - Analog gravity deep dive
+  phase_4_ongoing:
+  - Alerts for new preprints
+  - Citation monitoring for key papers
+extraction_template:
+  required_fields:
+  - Bibliographic data
+  - Core mathematical framework
+  - Key predictions/corrections
+  - Experimental bounds cited
+  - Consistency proofs
+  structured_notes:
+  - Relevance to specific sub-question
+  - Methodology summary
+  - Key equations (LaTeX)
+  - Gaps or limitations identified
+filtering_criteria:
+  exclusion:
+  - Pseudoscientific aether theories without mathematical framework
+  - Non-technical speculations
+  - Publications without explicit Lorentz-symmetry discussion
+  inclusion:
+  - Peer-reviewed publications
+  - Preprints from arXiv (hep-th, gr-qc, quant-ph, cond-mat)
+  - Experimental results with quantitative bounds
+  - Rigorous mathematical derivations
+glossary_of_terms:
+- definition: Historical medium for light propagation; modern analogues include quantum
+    vacuum structure and emergent spacetime
+  term: Luminiferous Aether
+- definition: Lorentz invariance arising as low-energy approximation from deeper microstructured
+    theory
+  term: Emergent Lorentz Symmetry
+- definition: Standard-Model Extension – framework for systematic study of Lorentz
+    violation
+  term: SME
+- definition: Lorentz Violation
+  term: LV
+- definition: Quantum Gravity
+  term: QG
+keyword_taxonomy:
+  tier_1_core_concepts:
+  - emergent Lorentz symmetry
+  - quantum vacuum microstructure
+  - vacuum correlation function
+  - luminiferous aether
+  - preferred frame
+  - Lorentz invariance violation
+  tier_2_theoretical_frameworks:
+  - Standard-Model Extension SME
+  - Einstein-aether theory
+  - Hořava-Lifshitz gravity
+  - gravitational aether
+  - analogue gravity
+  - emergent gravity
+  - induced matter theory
+  tier_3_phenomenology:
+  - photon dispersion
+  - graviton mass
+  - modified dispersion relation
+  - vacuum birefringence
+  - time of flight
+  - gamma-ray burst constraints
+  - GW170817 multimessenger
+  tier_4_formal_properties:
+  - Ward identity
+  - unitarity preservation
+  - renormalizability
+  - effective field theory
+  - UV completion
+  tier_5_cosmological:
+  - vacuum energy regularization
+  - cosmological constant problem
+  - dark energy aether
+metadata:
+  date_created: '2024-01-15'
+  primary_objective: Derive conditions for emergent Lorentz symmetry, compute phenomenological
+    corrections, verify consistency
+  project_title: Emergent Metric Structure from Vacuum Correlations
+  search_lifecycle: initial_exploration → targeted_retrieval → verification
+search_protocols:
+  boolean_operators:
+  - AND (intersection)
+  - OR (union)
+  - NOT (exclusion)
+  - NEAR/n (proximity, where supported)
+  date_range:
+    historical_context: 1880-1930
+    primary: 1990-present
+    seminal_works: all time
+  language: English (primary), German (historical), French (historical)
+search_queries:
+  SQ1_emergent_lorentz:
+    description: Mathematical structures for Lorentz emergence from vacuum correlations
+    name: Emergent Lorentz Symmetry Derivation
+    priority: 1
+    query_strings:
+    - database: arXiv
+      date_filter: 1990-
+      query: (emergent OR emergence) AND (Lorentz symmetry OR Lorentz invariance)
+        AND (vacuum OR quantum)
+    - database: Web of Science
+      query: TS=(vacuum correlation function AND emergent symmetry)
+    - database: inspireHEP
+      query: find t 'Lorentz violation' and t 'emergent' and date > 2000
+    status: ready
+  SQ2_dispersion_bounds:
+    description: Modified dispersion relations and experimental constraints
+    name: Phenomenological Dispersion Corrections
+    priority: 2
+    query_strings:
+    - database: arXiv
+      query: (dispersion relation OR modified dispersion) AND (photon OR graviton)
+        AND (Lorentz violation OR quantum gravity)
+    - database: NASA ADS
+      query: gamma-ray burst AND time delay AND Lorentz invariance
+    - database: Physical Review
+      query: title:(GW170817) AND (graviton mass OR Lorentz)
+    status: ready
+  SQ3_analog_gravity:
+    description: Emergent spacetime in condensed matter systems
+    name: Analog Gravity Validation
+    priority: 3
+    query_strings:
+    - database: arXiv
+      query: (analogue gravity OR analog gravity) AND (BEC OR graphene OR metamaterial)
+    - database: Web of Science
+      query: TS=(emergent spacetime AND condensed matter)
+    - database: Scopus
+      query: TITLE-ABS-KEY(phonon AND Lorentz AND emergent)
+    status: ready
+  SQ4_cosmological_constant:
+    description: Aether/vacuum structure approaches to cosmological constant
+    name: Vacuum Energy Regularization
+    priority: 4
+    query_strings:
+    - database: arXiv
+      query: (cosmological constant OR vacuum energy) AND (aether OR Lorentz violation
+        OR emergent)
+    - database: inspireHEP
+      query: find t 'cosmological constant problem' and (t 'aether' or t 'vacuum structure')
+    status: ready
+  SQ5_consistency:
+    description: Theoretical consistency of modified EFTs
+    name: Unitarity and Ward Identities
+    priority: 2
+    query_strings:
+    - database: arXiv
+      query: (Ward identity OR unitarity) AND (Lorentz violation OR modified dispersion
+        OR effective field theory)
+    - database: Web of Science
+      query: TS=(ghost states AND Lorentz violation)
+    status: ready
+source_evaluation:
+  hierarchy:
+    tier_1: Foundational papers with >500 citations or seminal preprints
+    tier_2: Specialized papers with 100-500 citations
+    tier_3: Recent publications (<2 years) with promising approaches
+    tier_4: Historical papers for context
+  quality_indicators:
+  - Journal impact factor
+  - Citation count
+  - Author reputation in field
+  - Experimental validation

@@ -1,0 +1,17 @@
+{
+  "real_search": true,
+  "queries_used": [
+    "Correlation between molecular geometry and material",
+    "Atoms and molecules are stable configurations",
+    ". The physical and chemical properties",
+    "tetrahedron",
+    "correlation molecular",
+    "molecular geometry",
+    "geometry material",
+    "material properties"
+  ],
+  "year_min": 2020,
+  "total_candidates": 567,
+  "bibtex_entries": 561,
+  "ts": "2026-04-08T15:48:14+00:00"
+}

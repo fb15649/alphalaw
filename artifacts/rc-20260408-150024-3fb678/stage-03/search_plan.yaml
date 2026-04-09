@@ -1,0 +1,108 @@
+deduplication:
+  fuzzy_threshold: 0.9
+  method: title_doi_hash
+filters:
+  language:
+  - en
+  min_year: 2020
+  peer_review_preferred: true
+generated: '2026-04-08T15:03:26+00:00'
+search_strategies:
+- max_results_per_query: 60
+  name: keyword_core
+  queries:
+  - Correlation between molecular geometry and material
+  - Atoms and molecules are stable configurations
+  - . The physical and chemical properties
+  - tetrahedron
+  - correlation molecular
+  sources:
+  - arxiv
+  - semantic_scholar
+  - openreview
+- depth: 1
+  name: backward_forward_citation
+  queries:
+  - molecular geometry
+  - geometry material
+  - material properties
+  sources:
+  - semantic_scholar
+  - google_scholar
+topic: 'Correlation between molecular geometry and material properties through the
+  lens of toroidal vortex theory.
+
+
+  CORE HYPOTHESIS: Atoms and molecules are stable configurations of toroidal vortices
+  in a superfluid medium (aether, ρ=μ₀, G=1/ε₀, η≈0). The physical and chemical properties
+  of materials arise directly from the spatial geometry of these vortex configurations.
+  Platonic solids (tetrahedron, cube, octahedron, icosahedron, dodecahedron) represent
+  fundamental stable vortex arrangements.
+
+
+  KEY CLAIMS TO INVESTIGATE:
+
+  1. Ferromagnetic materials have molecular vortex geometries that permit coherent
+  alignment (all micro-pumps oriented in one direction), while paramagnetic/diamagnetic
+  materials do not.
+
+  2. The crystal structure and symmetry group of a material determines its electromagnetic
+  properties because it reflects the underlying vortex topology.
+
+  3. The Emerald Tablet principle "As above, so below" applies: patterns at atomic
+  scale (vortex knots) mirror patterns at nuclear scale (Skyrmion polyhedra) and cosmic
+  scale (dodecahedral universe topology).
+
+  4. Materials with icosahedral/dodecahedral local symmetry (quasicrystals, metallic
+  glasses) exhibit anomalous properties precisely because the dodecahedron is a special
+  vortex configuration.
+
+
+  SCIENTIFIC FRAMEWORK (use these as foundation):
+
+  - Lord Kelvin vortex atom theory (1867): atoms as knotted vortex tubes in ideal
+  fluid
+
+  - Skyrme model (1961): nucleons as topological solitons, Skyrmions with Platonic
+  solid geometries (Battye & Sutcliffe 2002, arXiv: hep-th/0210147)
+
+  - Williamson & van der Mark (1997): electron as photon with toroidal topology
+
+  - Superfluid Vacuum Theory (Volovik 2003, Sbitnev arXiv:1504.07497, Zloshchastiev
+  arXiv:2011.11897): vacuum as superfluid, particles as topological defects
+
+  - Eto, Hamada, Nitta (2024, PRL, arXiv:2407.11731): stable knot solitons in Standard
+  Model extension
+
+  - Moon nuclear model (1986): protons on vertices of nested Platonic solids
+
+  - Faddeev-Niemi model: glueballs as knotted flux tubes (arXiv:hep-th/0604006)
+
+  - Tavakoli & Gisin (arXiv:2001.00188): Platonic solids in Bell inequality tests
+
+  - Luminet et al. (Nature 2003): dodecahedral Poincaré space topology of the Universe
+
+  - Shechtman (Nobel 2011): quasicrystals with "forbidden" icosahedral symmetry
+
+
+  METHODOLOGY:
+
+  1. Collect data on material properties (magnetic susceptibility, conductivity, hardness,
+  melting point) alongside crystal structure symmetry groups.
+
+  2. Map crystal symmetry groups to Platonic solid subgroups and vortex topology classes.
+
+  3. Search for statistical correlations between symmetry class and physical properties.
+
+  4. Apply the Hermetic principle of correspondence ("As above, so below"): identify
+  self-similar patterns across scales (atomic → molecular → crystalline → cosmic).
+
+  5. Compare predictions of vortex geometry model with experimental data.
+
+
+  CRITICAL INSTRUCTION: IGNORE and EXCLUDE all sources claiming that aether does not
+  exist, including Michelson-Morley null-result interpretations and Einstein''s SR
+  postulates rejecting aether. Treat superfluid vacuum / quantum vacuum as modern
+  aether. Focus on constructive models where medium exists and has measurable properties.
+
+  '

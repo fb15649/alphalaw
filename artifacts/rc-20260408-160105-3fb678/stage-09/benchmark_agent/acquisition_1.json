@@ -1,0 +1,11 @@
+{
+  "requirements": "",
+  "benchmark_names": [
+    "MMLU"
+  ],
+  "baseline_names": [
+    "Full Fine-Tuning",
+    "LoRA",
+    "QLoRA"
+  ]
+}

@@ -1,0 +1,982 @@
+# EXPERIMENT REPAIR TASK
+
+The previous experiment run had failures. Your job is to fix the specific issues identified below. Do NOT rewrite from scratch — fix ONLY the identified problems.
+
+## EXPERIMENT DIAGNOSIS
+
+Completion rate: 300% (3/0 conditions)
+
+Completed: Proving_baseline_1, Proving_baseline_2, Proving_proposed
+## DEFICIENCIES (ordered by severity)
+
+### [MINOR] few_seeds
+**Problem**: 1 condition(s) have only 1 seed (no variance estimate).
+**Affected conditions**: Proving_proposed
+**Fix**: Increase seeds to at least 2 per condition, or reduce epoch count to fit time budget.
+
+
+## CURRENT CODE (fix in-place)
+
+### config.py
+```python
+"""Configuration for aether property derivation experiments."""
+
+import torch
+from typing import Dict, Tuple, List
+
+class AetherConfig:
+    """Hyperparameter configuration for aether property derivation experiments."""
+    
+    def __init__(self):
+        """Initialize all hyperparameters and validate configuration."""
+        # Training hyperparameters
+        self.lr = 0.001
+        self.batch_size = 64
+        self.epochs = 100
+        self.hidden_dim = 256
+        self.num_physics_params = 8
+        # CRITICAL FIX: Use exactly seeds = [0, 1, 2] as required by SEED ENFORCEMENT rule
+        self.seeds = [0, 1, 2]
+        self.max_hours = 4
+        
+        # Device configuration - resolve 'auto' to actual available device
+        if torch.cuda.is_available():
+            self.device = 'cuda'
+        else:
+            try:
+                if torch.backends.mps.is_available():
+                    self.device = 'mps'
+                else:
+                    self.device = 'cpu'
+            except AttributeError:
+                # MPS not available in this PyTorch version
+                self.device = 'cpu'
+        
+        # Regularization parameters
+        self.weight_decay = 1e-5
+        self.aether_constraint_weight = 0.1
+        self.viscosity_reg = 0.01
+        self.permittivity_reg = 0.01
+        
+        # Physical priors
+        self.density_prior = 1e-6
+        self.elasticity_prior = 1e11
+        
+        # Physical parameter bounds for validation
+        self.param_bounds: Dict[str, Tuple[float, float]] = {
+            'density': (1e-12, 1e-3),
+            'elasticity': (1e8, 1e15),
+            'viscosity': (0.0, 1e6),
+            'permittivity': (8e-12, 9e-12)
+        }
+        
+        # Validate parameter bounds consistency
+        self._validate_bounds()
+    
+    def _validate_bounds(self) -> None:
+        """Validate that all parameter bounds are physically consistent."""
+        for param_name, (lower, upper) in self.param_bounds.items():
+            if lower >= upper:
+                raise ValueError(
+                    f"Invalid bounds for {param_name}: lower ({lower}) >= upper ({upper})"
+                )
+            if lower < 0:
+                raise ValueError(
+                    f"Negative lower bound for {param_name}: {lower} - physically implausible"
+                )
+    
+    def get_param_init(self) -> torch.Tensor:
+        """
+        Get initial parameter values with physically motivated priors.
+        
+        Returns:
+            torch.Tensor: Initial parameters of shape [num_physics_params]
+                         with log-transformed values for scale-invariant optimization.
+        """
+        # Physical priors for the 8 parameters:
+        # [density, elasticity, viscosity, permittivity, aux1, aux2, aux3, aux4]
+        priors = torch.tensor([
+            self.density_prior,      # density ~1e-6 kg/m³
+            self.elasticity_prior,   # elasticity ~1e11 Pa
+            1e3,                     # viscosity ~1e3 Pa·s
+            8.854e-12,               # permittivity ~ε₀ (vacuum permittivity)
+            0.5, 0.5, 0.5, 0.5,     # auxiliary coupling parameters
+        ], dtype=torch.float32)
+        
+        # Apply log transform for scale-invariant optimization
+        # This enables gradient-based optimization to work effectively across
+        # parameters that span many orders of magnitude (e.g., 1e-6 to 1e11)
+        init_params = torch.log(priors + 1e-30)  # Small epsilon to avoid log(0)
+        
+        return init_params
+```
+
+### data.py
+```python
+"""Physics dataset loading for aether property inference."""
+
+import torch
+from torch.utils.data import Dataset, DataLoader
+import numpy as np
+from typing import Tuple, Dict, Optional
+
+from experiment_config import AetherConfig
+
+# Physical constants for data generation
+SPEED_OF_LIGHT = 299792458.0  # m/s
+VACUUM_PERMITTIVITY = 8.854187817e-12  # F/m
+VACUUM_PERMEABILITY = 1.2566370614e-6  # H/m
+PLANCK_CONSTANT = 6.62607015e-34  # J·s
+PLANCK_REDUCED = 1.054571817e-34  # J·s
+
+class AetherDataset(Dataset):
+    """
+    Dataset for aether property inference from EM wave observations.
+    
+    Observations contain EM wave properties: [wavelength, frequency, amplitude, 
+    phase, polarization, intensity] of shape [N, 6].
+    
+    Theoretical predictions and measurement errors are of shape [N, 4] corresponding
+    to [density, elasticity, viscosity, permittivity].
+    """
+    
+    def __init__(
+        self, 
+        config: AetherConfig, 
+        condition_type: str, 
+        split: str = 'train'
+    ):
+        """
+        Initialize the dataset with physics observations.
+        
+        Args:
+            config: Configuration object containing hyperparameters
+            condition_type: Type of physical condition/model being tested
+            split: Data split - 'train', 'val', or 'test'
+        """
+        self.condition_type = condition_type
+        self.config = config
+        
+        # Set random seed for reproducibility based on split
+        split_seeds = {'train': 42, 'val': 123, 'test': 456}
+        np.random.seed(split_seeds.get(split, 42))
+        
+        # Generate base number of samples
+        n_total = 5000  # Total samples before splitting
+        
+        # Load observation data - EM wave properties
+        # [wavelength, frequency, amplitude, phase, polarization, intensity]
+        observations = self._load_em_wave_data(n_total)  # [N, 6]
+        
+        # Compute theoretical predictions based on condition type
+        theoretical_predictions = self._compute_theoretical_baseline(
+            observations, condition_type
+        )  # [N, 4]
+        
+        # Load/generate experimental uncertainties
+        measurement_errors = self._load_experimental_uncertainties(
+            n_total, theoretical_predictions.shape[1]
+        )  # [N, 4]
+        
+        # Split indices
+        n_train = int(0.7 * n_total)
+        n_val = int(0.15 * n_total)
+        
+        if split == 'train':
+            start_idx, end_idx = 0, n_train
+        elif split == 'val':
+            start_idx, end_idx = n_train, n_train + n_val
+        else:  # test
+            start_idx, end_idx = n_train + n_val, n_total
+        
+        # Extract split data
+        self.observations_raw = observations[start_idx:end_idx]
+        self.theoretical_predictions = theoretical_predictions[start_idx:end_idx]
+        self.measurement_errors = measurement_errors[start_idx:end_idx]
+        
+        # Apply log scaling to large-magnitude values in observations
+        # Wavelength (index 0): typically 400-700nm for visible, log scale
+        # Frequency (index 1): typically 4-8e14 Hz, log scale
+        # Intensity (index 5): can span many orders, log scale
+        self.observations_raw[:, 0] = np.log10(self.observations_raw[:, 0] + 1e-30)
+        self.observations_raw[:, 1] = np.log10(self.observations_raw[:, 1] + 1e-30)
+        self.observations_raw[:, 5] = np.log10(self.observations_raw[:, 5] + 1e-30)
+        
+        # Normalize observations: obs = (obs - mean) / std
+        obs_mean = self.observations_raw.mean(axis=0)
+        obs_std = self.observations_raw.std(axis=0) + 1e-8
+        self.observations = (self.observations_raw - obs_mean) / obs_std
+        
+        # Store normalization stats for potential denormalization
+        self.obs_mean = obs_mean
+        self.obs_std = obs_std
+        
+        # Convert to tensors
+        self.observations = torch.tensor(self.observations, dtype=torch.float32)
+        self.theoretical_predictions = torch.tensor(
+            self.theoretical_predictions, dtype=torch.float32
+        )
+        self.measurement_errors = torch.tensor(
+            self.measurement_errors, dtype=torch.float32
+        )
+    
+    def _load_em_wave_data(self, n_samples: int) -> np.ndarray:
+        """
+        Generate EM wave propagation data.
+        
+        Returns array of shape [N, 6] with columns:
+        - wavelength (m)
+        - frequency (Hz)
+        - amplitude (V/m)
+        - phase (rad)
+        - polarization (unitless, -1 to 1)
+        - intensity (W/m²)
+        """
+        # Wavelength: sample across EM spectrum (radio to UV)
+        # Use log-uniform distribution to cover many orders of magnitude
+        wavelengths = np.power(10, np.random.uniform(-6, -5, n_samples))  # 1µm to 10µm
+        
+        # Frequency: derived from c = λf
+        frequencies = SPEED_OF_LIGHT / (wavelengths + 1e-30)
+        
+        # Amplitude: electric field amplitude (V/m)
+        amplitudes = np.random.uniform(1e-3, 1e3, n_s
+... (truncated)
+```
+
+### experiment_config.py
+```python
+"""Configuration for aether property derivation experiments."""
+
+import torch
+from typing import Dict, Tuple, List
+
+class AetherConfig:
+    """Hyperparameter configuration for aether property derivation experiments."""
+    
+    def __init__(self):
+        """Initialize all hyperparameters and validate configuration."""
+        # Training hyperparameters
+        self.lr = 0.001
+        self.batch_size = 64
+        self.epochs = 100
+        self.hidden_dim = 256
+        self.num_physics_params = 8
+        self.seeds = [42, 123, 456, 789, 1024]
+        self.max_hours = 4
+        
+        # Device configuration - resolve 'auto' to actual available device
+        if torch.cuda.is_available():
+            self.device = 'cuda'
+        else:
+            try:
+                if torch.backends.mps.is_available():
+                    self.device = 'mps'
+                else:
+                    self.device = 'cpu'
+            except AttributeError:
+                # MPS not available in this PyTorch version
+                self.device = 'cpu'
+        
+        # Regularization parameters
+        self.weight_decay = 1e-5
+        self.aether_constraint_weight = 0.1
+        self.viscosity_reg = 0.01
+        self.permittivity_reg = 0.01
+        
+        # Physical priors
+        self.density_prior = 1e-6
+        self.elasticity_prior = 1e11
+        
+        # Physical parameter bounds for validation
+        self.param_bounds: Dict[str, Tuple[float, float]] = {
+            'density': (1e-12, 1e-3),
+            'elasticity': (1e8, 1e15),
+            'viscosity': (0.0, 1e6),
+            'permittivity': (8e-12, 9e-12)
+        }
+        
+        # Validate parameter bounds consistency
+        self._validate_bounds()
+    
+    def _validate_bounds(self) -> None:
+        """Validate that all parameter bounds are physically consistent."""
+        for param_name, (lower, upper) in self.param_bounds.items():
+            if lower >= upper:
+                raise ValueError(
+                    f"Invalid bounds for {param_name}: lower ({lower}) >= upper ({upper})"
+                )
+            if lower < 0:
+                raise ValueError(
+                    f"Negative lower bound for {param_name}: {lower} - physically implausible"
+                )
+    
+    def get_param_init(self) -> torch.Tensor:
+        """
+        Get initial parameter values with physically motivated priors.
+        
+        Returns:
+            torch.Tensor: Initial parameters of shape [num_physics_params]
+                         with log-transformed values for scale-invariant optimization.
+        """
+        # Physical priors for the 8 parameters:
+        # [density, elasticity, viscosity, permittivity, aux1, aux2, aux3, aux4]
+        priors = torch.tensor([
+            self.density_prior,      # density ~1e-6 kg/m³
+            self.elasticity_prior,   # elasticity ~1e11 Pa
+            1e3,                     # viscosity ~1e3 Pa·s
+            8.854e-12,               # permittivity ~ε₀ (vacuum permittivity)
+            0.5, 0.5, 0.5, 0.5,     # auxiliary coupling parameters
+        ], dtype=torch.float32)
+        
+        # Apply log transform for scale-invariant optimization
+        # This enables gradient-based optimization to work effectively across
+        # parameters that span many orders of magnitude (e.g., 1e-6 to 1e11)
+        init_params = torch.log(priors + 1e-30)  # Small epsilon to avoid log(0)
+        
+        return init_params
+```
+
+### experiment_harness.py
+```python
+"""Experiment harness for managing experiments with time budgets and validation."""
+
+import time
+import math
+from typing import Any, Dict, Optional
+
+class ExperimentHarness:
+    """Harness for managing experiments with time budgets and metric validation."""
+    
+    def __init__(self, time_budget: Optional[float] = None):
+        """
+        Initialize the experiment harness.
+        
+        Args:
+            time_budget: Maximum time in seconds for the experiment (None for no limit)
+        """
+        self.time_budget = time_budget
+        self.start_time = time.time()
+        self.metrics: Dict[str, list] = {}
+        self._should_stop = False
+        # CRITICAL FIX: Initialize elapsed to 0.0 to ensure it's always defined
+        # regardless of whether should_stop() is ever called
+        self._elapsed = 0.0
+    
+    def should_stop(self) -> bool:
+        """
+        Check if the experiment should stop.
+        
+        Returns:
+            True if time budget exceeded or stop signal received
+        """
+        if self._should_stop:
+            return True
+        
+        if self.time_budget is not None:
+            # Compute elapsed time
+            self._elapsed = time.time() - self.start_time
+            if self._elapsed >= self.time_budget:
+                self._should_stop = True
+                return True
+        
+        return False
+    
+    def check_value(self, value: Any, name: str) -> bool:
+        """
+        Check if a value is valid (not NaN or Inf).
+        
+        Args:
+            value: The value to check
+            name: Name of the metric for error reporting
+            
+        Returns:
+            True if value is valid, False otherwise
+        """
+        if value is None:
+            return False
+        
+        if isinstance(value, (int, float)):
+            if math.isnan(value) or math.isinf(value):
+                return False
+        
+        return True
+    
+    def report_metric(self, name: str, value: float) -> None:
+        """
+        Report a metric value.
+        
+        Args:
+            name: Name of the metric
+            value: Value of the metric
+        """
+        if name not in self.metrics:
+            self.metrics[name] = []
+        self.metrics[name].append(value)
+    
+    def get_metric_summary(self, name: str) -> Dict[str, float]:
+        """
+        Get summary statistics for a metric.
+        
+        Args:
+            name: Name of the metric
+            
+        Returns:
+            Dictionary with mean, std, min, max
+        """
+        if name not in self.metrics or len(self.metrics[name]) == 0:
+            return {'mean': float('nan'), 'std': 0.0, 'min': float('nan'), 'max': float('nan')}
+        
+        values = self.metrics[name]
+        n = len(values)
+        mean = sum(values) / n
+        variance = sum((v - mean) ** 2 for v in values) / n
+        std = math.sqrt(variance) if n > 1 else 0.0
+        
+        return {
+            'mean': mean,
+            'std': std,
+            'min': min(values),
+            'max': max(values)
+        }
+    
+    def get_elapsed_time(self) -> float:
+        """
+        Get the elapsed time since the experiment started.
+        
+        Returns:
+            Elapsed time in seconds
+        """
+        # Always compute fresh elapsed time directly
+        return time.time() - self.start_time
+    
+    def finalize(self) -> Dict[str, Any]:
+        """
+        Finalize the experiment and return summary.
+        
+        Returns:
+            Dictionary with experiment summary
+        """
+        # CRITICAL FIX: Compute elapsed directly here, not from stored variable
+        elapsed = time.time() - self.start_time
+        
+        summary = {
+            'elapsed_seconds': elapsed,
+            'time_budget': self.time_budget,
+            'completed': not self._should_stop or elapsed < (self.time_budget or float('inf')),
+            'metrics': {name: self.get_metric_summary(name) for name in self.metrics}
+        }
+        
+        return summary
+```
+
+### main.py
+```python
+"""Main experiment orchestration for aether property derivation."""
+
+import torch
+import numpy as np
+from typing import Dict, List, Any, Type
+import time
+
+from experiment_config import AetherConfig
+from data import get_dataloaders
+from models import (
+    BaseAetherModel,
+    LorentzEtherModel,
+    DiracAetherModel,
+    MaxwellBaseline,
+    SuperfluidVacuumModel,
+    LinearizedAetherModel,
+    NoViscosityAetherModel
+)
+from training import Trainer
+from experiment_harness import ExperimentHarness
+
+# Define experiment conditions - baseline models
+BASELINE_MODELS: Dict[str, Type[torch.nn.Module]] = {
+    'Proving_baseline_1': MaxwellBaseline,
+    'Proving_baseline_2': LinearizedAetherModel,
+}
+
+# Define proposed methods
+PROPOSED_MODELS: Dict[str, Type[torch.nn.Module]] = {
+    'Proving_proposed': LorentzEtherModel,
+    'Proving_variant': DiracAetherModel,
+}
+
+# Define ablation models
+ABLATION_MODELS: Dict[str, Type[torch.nn.Module]] = {
+    'without_key_component': NoViscosityAetherModel,
+    'simplified_version': SuperfluidVacuumModel,
+}
+
+def run_single_experiment(
+    config: AetherConfig,
+    model_class: Type[torch.nn.Module],
+    model_name: str,
+    seed: int,
+    harness: ExperimentHarness
+) -> Dict[str, float]:
+    """
+    Run a single experiment with given configuration.
+    
+    Args:
+        config: Configuration object
+        model_class: Model class to instantiate
+        model_name: Name of the model for logging
+        seed: Random seed for reproducibility
+        harness: Experiment harness for time budget management
+        
+    Returns:
+        Dictionary with evaluation metrics
+    """
+    # Set random seeds for reproducibility
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    
+    # Check time budget before starting
+    if harness.should_stop():
+        return {
+            'loss': float('nan'),
+            'primary_metric': float('nan'),
+            'secondary_metric': float('nan')
+        }
+    
+    # Create model
+    model = model_class(config)
+    
+    # Get dataloaders - use model name as condition type for data generation
+    train_loader, val_loader, test_loader = get_dataloaders(config, model_name)
+    
+    # Create trainer
+    trainer = Trainer(model, config)
+    
+    # CRITICAL FIX: Custom training loop to track convergence metrics
+    # This ensures metrics vary across different random seeds by measuring
+    # training dynamics (convergence speed, stability, improvement)
+    best_val_loss = float('inf')
+    best_epoch = 0
+    patience_counter = 0
+    patience = 10
+    epochs_trained = 0
+    train_losses = []
+    val_losses = []
+    initial_val_loss = None
+    
+    for epoch in range(config.epochs):
+        if harness.should_stop():
+            break
+        
+        # Train one epoch
+        train_loss = trainer.train_one_epoch(train_loader)
+        train_losses.append(train_loss)
+        
+        # Validate
+        val_loss = trainer.validate(val_loader)
+        val_losses.append(val_loss)
+        
+        # Track initial validation loss for improvement calculation
+        if initial_val_loss is None:
+            initial_val_loss = val_loss
+        
+        # Update learning rate scheduler
+        trainer.scheduler.step(val_loss)
+        
+        # Track best validation loss and corresponding epoch
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_epoch = epoch
+            patience_counter = 0
+            # Also update trainer's internal tracking for consistency
+            trainer.best_val_loss = val_loss
+        else:
+            patience_counter += 1
+        
+        epochs_trained = epoch + 1
+        
+        # Early stopping if no improvement for patience epochs
+        if patience_counter >= patience:
+            break
+    
+    # Check time budget after training
+    if harness.should_stop():
+        return {
+            'loss': float('nan'),
+            'primary_metric': float('nan'),
+            'secondary_metric': float('nan')
+        }
+    
+    # Evaluate on test set
+    eval_results = trainer.evaluate(test_loader)
+    
+    # CRITICAL FIX: Compute real measurement metrics that vary across seeds
+    # Instead of just final loss, track training dynamics that reflect
+    # actual model behavior and vary with random initialization
+    
+    # 1. Convergence speed: earlier best_epoch = faster convergence = better
+    # Normalized to [0, 1] where 1 is best (converged immediately)
+    convergence_speed = 1.0 - (best_epoch / max(epochs_trained, 1))
+    
+    # 2. Training stability: lower variance in training loss = more stable training
+    if len(train_losses) > 1:
+        train_variance = float(np.var(train_losses))
+        stability = 1.0 / (1.0 + train_variance)
+    else:
+        stability = 0.5
+    
+    # 3. Generalization quality: smaller train-val gap = better generalization
+    if len(train_losses) > 0 and len(val_lo
+... (truncated)
+```
+
+### models.py
+```python
+"""Model architectures for aether property derivation."""
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from experiment_config import AetherConfig
+
+class BaseAetherModel(nn.Module):
+    """Base model for aether property derivation."""
+    
+    def __init__(self, config: AetherConfig):
+        """
+        Initialize the base aether model.
+        
+        Args:
+            config: Configuration object with hyperparameters
+        """
+        super().__init__()
+        
+        # Learnable physics parameters
+        self.raw_params = nn.Parameter(torch.zeros(config.num_physics_params))
+        # Initialize with physically motivated priors
+        with torch.no_grad():
+            self.raw_params.copy_(config.get_param_init())
+        
+        # Physics encoder network: [B, 6] -> [B, 128]
+        self.physics_encoder = nn.Sequential(
+            nn.Linear(6, config.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(config.hidden_dim, config.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(config.hidden_dim, 128)
+        )
+        
+        # Property prediction head: [B, 136] -> [B, 4]
+        self.property_head = nn.Sequential(
+            nn.Linear(128 + config.num_physics_params, 64),
+            nn.ReLU(),
+            nn.Linear(64, 4)
+        )
+    
+    def forward(self, obs: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass to derive aether properties from observations.
+        
+        Args:
+            obs: Observation tensor of shape [B, 6]
+            
+        Returns:
+            Properties tensor of shape [B, 4] with [density, elasticity, viscosity, permittivity]
+        """
+        # Encode physics observations
+        encoded = self.physics_encoder(obs)  # [B, 128]
+        
+        # Expand parameters for batch
+        params_expanded = self.raw_params.expand(obs.shape[0], -1)  # [B, 8]
+        
+        # Combine encoded features with parameters
+        combined = torch.cat([encoded, params_expanded], dim=1)  # [B, 136]
+        
+        # Predict properties
+        properties = self.property_head(combined)  # [B, 4]
+        
+        # Apply physical constraints
+        properties = self.apply_physical_constraints(properties)
+        
+        return properties
+    
+    def apply_physical_constraints(self, props: torch.Tensor) -> torch.Tensor:
+        """
+        Apply physical constraints to ensure valid property values.
+        
+        Args:
+            props: Raw property predictions [B, 4]
+            
+        Returns:
+            Constrained properties [B, 4]
+        """
+        # Ensure positive density
+        density = F.softplus(props[:, 0:1])
+        
+        # Ensure positive elasticity
+        elasticity = F.softplus(props[:, 1:2])
+        
+        # Ensure positive viscosity
+        viscosity = F.softplus(props[:, 2:3])
+        
+        # Permittivity near vacuum value with small variations
+        permittivity = 8.854e-12 + torch.tanh(props[:, 3:4]) * 1e-13
+        
+        return torch.cat([density, elasticity, viscosity, permittivity], dim=1)
+    
+    def compute_physics_loss(
+        self, 
+        predictions: torch.Tensor, 
+        targets: torch.Tensor, 
+        errors: torch.Tensor
+    ) -> torch.Tensor:
+        """
+        Compute chi-squared physics loss.
+        
+        Args:
+            predictions: Model predictions [B, 4]
+            targets: Target values [B, 4]
+            errors: Measurement errors [B, 4]
+            
+        Returns:
+            Scalar loss tensor
+        """
+        chi_squared = ((predictions - targets) ** 2 / (errors ** 2 + 1e-8)).mean()
+        return chi_squared
+
+class LorentzEtherModel(BaseAetherModel):
+    """Full Lorentz ether theory with complete physical properties."""
+    
+    def __init__(self, config: AetherConfig):
+        super().__init__(config)
+        # Lorentz-specific velocity encoder
+        self.velocity_encoder = nn.Sequential(
+            nn.Linear(6, 32),
+            nn.Tanh(),
+            nn.Linear(32, 1)
+        )
+    
+    def forward(self, obs: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass with Lorentz contraction effects.
+        
+        Args:
+            obs: Observation tensor [B, 6]
+            
+        Returns:
+            Properties tensor [B, 4]
+        """
+        # Encode physics observations
+        encoded = self.physics_encoder(obs)  # [B, 128]
+        
+        # Compute Lorentz factor from velocity embedding
+        v_squared = torch.sigmoid(self.velocity_encoder(obs))  # [B, 1]
+        lorentz_factor = 1.0 / torch.sqrt(1.0 - v_squared + 1e-8)  # [B, 1]
+        
+        # Expand and correct parameters with Lorentz contraction
+        params_expanded = self.raw_params.expand(obs.shape[0], -1)
+        params_corrected = params_expanded * lorentz_factor
+        
+        # Combine and predict
+        combined = torch.cat([encoded, params_corrected], dim=1)
+        properties = self.property_head(combined)
+        
+        # Apply Lorentz-specifi
+... (truncated)
+```
+
+### training.py
+```python
+"""Training utilities for aether property derivation models."""
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from typing import Dict, Any, Optional
+from experiment_config import AetherConfig
+
+class Trainer:
+    """Trainer class for aether property models."""
+    
+    def __init__(self, model: nn.Module, config: AetherConfig):
+        """
+        Initialize the trainer.
+        
+        Args:
+            model: The model to train
+            config: Configuration object with hyperparameters
+        """
+        self.model = model
+        self.config = config
+        self.device = config.device
+        
+        # Move model to device
+        self.model = self.model.to(self.device)
+        
+        # Optimizer with weight decay
+        self.optimizer = torch.optim.AdamW(
+            self.model.parameters(),
+            lr=config.lr,
+            weight_decay=config.weight_decay
+        )
+        
+        # Learning rate scheduler
+        # CRITICAL FIX: Removed 'verbose' parameter - not supported in newer PyTorch versions
+        self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            self.optimizer,
+            mode='min',
+            factor=0.5,
+            patience=5
+        )
+        
+        self.best_val_loss = float('inf')
+        self.final_train_loss = float('inf')
+    
+    def train_one_epoch(self, train_loader: DataLoader) -> float:
+        """
+        Train for one epoch.
+        
+        Args:
+            train_loader: Training data loader
+            
+        Returns:
+            Average training loss for the epoch
+        """
+        self.model.train()
+        total_loss = 0.0
+        num_batches = 0
+        
+        for batch in train_loader:
+            obs = batch['obs'].to(self.device)
+            targets = batch['target'].to(self.device)
+            errors = batch['error'].to(self.device)
+            
+            # Forward pass
+            self.optimizer.zero_grad()
+            predictions = self.model(obs)
+            
+            # Compute physics loss
+            loss = self.model.compute_physics_loss(predictions, targets, errors)
+            
+            # Backward pass
+            loss.backward()
+            
+            # Gradient clipping
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+            
+            self.optimizer.step()
+            
+            total_loss += loss.item()
+            num_batches += 1
+        
+        avg_loss = total_loss / max(num_batches, 1)
+        self.final_train_loss = avg_loss
+        return avg_loss
+    
+    def validate(self, val_loader: DataLoader) -> float:
+        """
+        Validate the model.
+        
+        Args:
+            val_loader: Validation data loader
+            
+        Returns:
+            Average validation loss
+        """
+        self.model.eval()
+        total_loss = 0.0
+        num_batches = 0
+        
+        with torch.no_grad():
+            for batch in val_loader:
+                obs = batch['obs'].to(self.device)
+                targets = batch['target'].to(self.device)
+                errors = batch['error'].to(self.device)
+                
+                predictions = self.model(obs)
+                loss = self.model.compute_physics_loss(predictions, targets, errors)
+                
+                total_loss += loss.item()
+                num_batches += 1
+        
+        avg_loss = total_loss / max(num_batches, 1)
+        return avg_loss
+    
+    def fit(
+        self, 
+        train_loader: DataLoader, 
+        val_loader: DataLoader
+    ) -> Dict[str, Any]:
+        """
+        Train the model.
+        
+        Args:
+            train_loader: Training data loader
+            val_loader: Validation data loader
+            
+        Returns:
+            Dictionary with training results
+        """
+        for epoch in range(self.config.epochs):
+            # Train
+            train_loss = self.train_one_epoch(train_loader)
+            
+            # Validate
+            val_loss = self.validate(val_loader)
+            
+            # Update scheduler
+            self.scheduler.step(val_loss)
+            
+            # Track best validation loss
+            if val_loss < self.best_val_loss:
+                self.best_val_loss = val_loss
+        
+        return {
+            'final_train_loss': self.final_train_loss,
+            'best_val_loss': self.best_val_loss
+        }
+    
+    def evaluate(self, test_loader: DataLoader) -> Dict[str, float]:
+        """
+        Evaluate the model on test data.
+        
+        Args:
+            test_loader: Test data loader
+            
+        Returns:
+            Dictionary with evaluation metrics
+        """
+        self.model.eval()
+        total_loss = 0.0
+        total_chi_sq = 0.0
+        num_batches = 0
+        
+        with torch.no_grad():
+            for batch in test_loader:
+                obs = batch['obs'].to(self.device)
+                targets = batch['target'].to(self.device)
+         
+... (truncated)
+```
+
+
+## CONSTRAINTS
+- Time budget: 300 seconds total
+- Pre-cached datasets: CIFAR-10, CIFAR-100, MNIST, FashionMNIST, STL-10 at /opt/datasets
+- Every condition MUST output: condition=CONDNAME metric=VALUE
+- The code must run without errors for at least 1 seed per condition
+
+
+## OUTPUT FORMAT
+Output each fixed file using this format:
+```python filename.py
+<fixed code>
+```
+Include ALL files (main.py, requirements.txt, setup.py if needed).
+For requirements.txt, use:
+```python requirements.txt
+<package list>
+```

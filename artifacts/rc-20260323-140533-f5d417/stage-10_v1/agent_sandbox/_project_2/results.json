@@ -1,0 +1,10 @@
+{
+  "metrics": {
+    "primary_metric": 0.0,
+    "secondary_metric": 0.65378366628836
+  },
+  "elapsed_sec": 47.28,
+  "time_budget_sec": 300,
+  "steps_completed": 0,
+  "nan_count": 0
+}

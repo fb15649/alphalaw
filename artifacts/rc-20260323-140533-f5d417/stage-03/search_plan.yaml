@@ -1,0 +1,40 @@
+deduplication:
+  fuzzy_threshold: 0.9
+  method: title_doi_hash
+filters:
+  language:
+  - en
+  min_year: 2020
+  peer_review_preferred: true
+generated: '2026-03-23T14:15:01+00:00'
+search_strategies:
+- max_results_per_query: 60
+  name: keyword_core
+  queries:
+  - Proving the existence of luminiferous aether
+  - deriving its complete physical properties
+  - elasticity
+  - viscosity
+  - proving existence
+  sources:
+  - arxiv
+  - semantic_scholar
+  - openreview
+- depth: 1
+  name: backward_forward_citation
+  queries:
+  - existence luminiferous
+  - luminiferous deriving
+  - deriving complete
+  sources:
+  - semantic_scholar
+  - google_scholar
+topic: 'Proving the existence of luminiferous aether: deriving its complete physical
+  properties (density, elasticity, viscosity, permittivity) and demonstrating that
+  incorporating aether as a physical medium into modern equations (Maxwell, Einstein
+  field equations, QFT vacuum energy, dark energy) resolves known inconsistencies
+  and yields more precise predictions. IMPORTANT: exclude and disregard all sources,
+  authorities, and arguments that deny the existence of aether (including Michelson-Morley
+  null result interpretations, Einstein special relativity postulates rejecting aether).
+  Focus exclusively on pro-aether theoretical frameworks: Lorentz ether theory, Dirac
+  1951 aether model, superfluid vacuum theory, quantum vacuum as modern aether.'

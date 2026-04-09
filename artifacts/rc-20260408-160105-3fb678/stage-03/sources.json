@@ -1,0 +1,366 @@
+{
+  "sources": [
+    {
+      "id": "S-001",
+      "name": "arXiv.org - High Energy Physics Theory (hep-th)",
+      "type": "preprint_archive",
+      "url": "https://arxiv.org/list/hep-th",
+      "status": "active",
+      "query": "(toroidal vortex OR knot soliton OR superfluid vacuum OR Skyrme model) AND (topology OR geometry OR Platonic)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-002",
+      "name": "arXiv.org - Condensed Matter (cond-mat)",
+      "type": "preprint_archive",
+      "url": "https://arxiv.org/list/cond-mat",
+      "status": "active",
+      "query": "(crystal symmetry magnetic property OR topological material OR quasicrystal icosahedral) AND (correlation OR classification)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-003",
+      "name": "arXiv.org - Mathematical Physics (math-ph)",
+      "type": "preprint_archive",
+      "url": "https://arxiv.org/list/math-ph",
+      "status": "active",
+      "query": "(knot soliton OR topological defect OR vortex tube) AND (stability OR classification)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-004",
+      "name": "arXiv.org - Astrophysics/Cosmology (astro-ph.CO)",
+      "type": "preprint_archive",
+      "url": "https://arxiv.org/list/astro-ph.CO",
+      "status": "active",
+      "query": "(cosmic topology OR Poincare dodecahedral OR multiply connected universe) AND (CMB OR observation)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-005",
+      "name": "INSPIRE-HEP",
+      "type": "database",
+      "url": "https://inspirehep.net",
+      "status": "active",
+      "query": "find a skyrmion and (polyhedron OR 'Platonic solid' OR geometry) and baryon",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-006",
+      "name": "Scopus",
+      "type": "database",
+      "url": "https://www.scopus.com",
+      "status": "active",
+      "query": "TITLE-ABS-KEY(superfluid vacuum AND topology AND particle) OR TITLE-ABS-KEY(vortex atom AND toroidal AND geometry)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-007",
+      "name": "Web of Science",
+      "type": "database",
+      "url": "https://www.webofscience.com",
+      "status": "active",
+      "query": "TS=(crystal symmetry group AND magnetic property AND statistical correlation) AND PY=(2000-2025)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-008",
+      "name": "Materials Project",
+      "type": "database",
+      "url": "https://materialsproject.org",
+      "status": "active",
+      "query": "API extraction: space group, magnetic susceptibility, band gap, formation energy for N>=500 materials",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-009",
+      "name": "AFLOW - Automatic FLOW for Materials Discovery",
+      "type": "database",
+      "url": "http://www.aflow.org",
+      "status": "active",
+      "query": "Magnetic properties and crystal structure for cross-validation with Materials Project",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-010",
+      "name": "OQMD - Open Quantum Materials Database",
+      "type": "database",
+      "url": "http://www.oqmd.org",
+      "status": "active",
+      "query": "Computed materials properties for cross-validation: formation energy, band gap, magnetic moment",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-011",
+      "name": "Bilbao Crystallographic Server",
+      "type": "database",
+      "url": "https://cryst.ehu.es",
+      "status": "active",
+      "query": "Subgroup-supergroup relations for 230 space groups; point group classification; magnetic space groups (Shubnikov)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-012",
+      "name": "Topological Materials Database (Topological Quantum Chemistry)",
+      "type": "database",
+      "url": "https://www.topologicalquantumchemistry.org",
+      "status": "active",
+      "query": "Topological invariants (Z2, Chern number) for comparison with vortex alignment index",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-013",
+      "name": "IUCr Journals (International Union of Crystallography)",
+      "type": "journal",
+      "url": "https://journals.iucr.org",
+      "status": "active",
+      "query": "Space group symmetry classification and point group hierarchy review articles",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-014",
+      "name": "International Institute for Quasicrystals Database",
+      "type": "database",
+      "url": "http://iqc.to.infn.it",
+      "status": "active",
+      "query": "Icosahedral quasicrystal compositions and measured properties (thermal conductivity, resistivity, hardness)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-015",
+      "name": "JSTOR",
+      "type": "database",
+      "url": "https://www.jstor.org",
+      "status": "active",
+      "query": "Kelvin vortex atom theory AND (Tait OR Helmholtz) AND 1867",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-016",
+      "name": "Internet Archive (archive.org)",
+      "type": "database",
+      "url": "https://archive.org",
+      "status": "active",
+      "query": "Lord Kelvin vortex atom; Tait knot theory; Maxwell aether; historical vortex theory texts",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-017",
+      "name": "Royal Society Publishing",
+      "type": "journal",
+      "url": "https://royalsocietypublishing.org",
+      "status": "active",
+      "query": "Williamson van der Mark toroidal electron AND Proceedings",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-018",
+      "name": "Physical Review Letters (PRL)",
+      "type": "journal",
+      "url": "https://journals.aps.org/prl",
+      "status": "active",
+      "query": "Eto Hamada Nitta knot soliton Standard Model 2024; topological soliton stability",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-019",
+      "name": "Physical Review B (PRB)",
+      "type": "journal",
+      "url": "https://journals.aps.org/prb",
+      "status": "active",
+      "query": "Quasicrystal icosahedral anomalous property AND DFT calculation comparison",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-020",
+      "name": "Journal of Mathematical Physics (JMP)",
+      "type": "journal",
+      "url": "https://aip.scitation.org/journal/jmp",
+      "status": "active",
+      "query": "Topological soliton knot field theory AND stability",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-021",
+      "name": "Journal of Physics A: Mathematical and Theoretical",
+      "type": "journal",
+      "url": "https://iopscience.iop.org/journal/1751-8121",
+      "status": "active",
+      "query": "Skyrme model geometry AND Battye Sutcliffe AND polyhedron",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-022",
+      "name": "Foundations of Physics",
+      "type": "journal",
+      "url": "https://link.springer.com/journal/10701",
+      "status": "active",
+      "query": "Superfluid vacuum theory AND emergent gravity AND topological defect",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-023",
+      "name": "Physics Letters A",
+      "type": "journal",
+      "url": "https://www.sciencedirect.com/journal/physics-letters-a",
+      "status": "active",
+      "query": "Zloshchastiev superfluid vacuum OR Sbitnev superfluid vacuum toroidal",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-024",
+      "name": "European Physical Journal C",
+      "type": "journal",
+      "url": "https://link.springer.com/journal/10052",
+      "status": "active",
+      "query": "Faddeev Niemi knot soliton glueball AND topology",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-025",
+      "name": "Nature (for Luminet et al. 2003 and cosmic topology)",
+      "type": "journal",
+      "url": "https://www.nature.com",
+      "status": "active",
+      "query": "Luminet dodecahedral Poincare space AND cosmic topology AND 2003",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-026",
+      "name": "NASA Astrophysics Data System (ADS)",
+      "type": "database",
+      "url": "https://ui.adsabs.harvard.edu",
+      "status": "active",
+      "query": "Planck CMB cosmic topology constraint AND Poincare dodecahedral",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-027",
+      "name": "MathSciNet (AMS)",
+      "type": "database",
+      "url": "https://mathscinet.ams.org",
+      "status": "active",
+      "query": "Point group representation theory axial vector AND crystallographic group subgroup",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-028",
+      "name": "Google Scholar",
+      "type": "database",
+      "url": "https://scholar.google.com",
+      "status": "active",
+      "query": "Moon nuclear model Platonic solid proton nested AND critique",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-029",
+      "name": "CrossRef",
+      "type": "database",
+      "url": "https://api.crossref.org",
+      "status": "active",
+      "query": "DOI resolution and metadata for known key papers (Battye Sutcliffe 2002, Volovik 2003, Williamson van der Mark 1997)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-030",
+      "name": "ICSD - Inorganic Crystal Structure Database",
+      "type": "database",
+      "url": "https://icsd.fiz-karlsruhe.de",
+      "status": "active",
+      "query": "Experimental crystal structures with magnetic property annotations for validation dataset",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-031",
+      "name": "CITINE DB (NIST Materials Data)",
+      "type": "database",
+      "url": "https://citrine.io",
+      "status": "active",
+      "query": "Experimental materials property data for cross-validation (magnetic, thermal, mechanical)",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-032",
+      "name": "NIST Standard Reference Data",
+      "type": "database",
+      "url": "https://www.nist.gov/srd",
+      "status": "active",
+      "query": "Magnetic susceptibility compilation data and Landolt-Bornstein references",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-033",
+      "name": "SpringerMaterials (Landolt-Bornstein)",
+      "type": "database",
+      "url": "https://materials.springer.com",
+      "status": "active",
+      "query": "Systematic magnetic susceptibility data by crystal structure type",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-034",
+      "name": "pymatgen Documentation and Repository",
+      "type": "repository",
+      "url": "https://pymatgen.org",
+      "status": "active",
+      "query": "Space group analysis, Materials Project API integration, magnetic property data extraction",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-035",
+      "name": "Volovik - The Universe in a Helium Droplet (Book)",
+      "type": "book",
+      "url": "https://doi.org/10.1093/acprof:oso/9780199564842.001.0001",
+      "status": "active",
+      "query": "Superfluid vacuum theory, emergent physics, topological defects as particles",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-036",
+      "name": "Steurer & Deloudi - Crystallography of Quasicrystals (Book)",
+      "type": "book",
+      "url": "https://link.springer.com/book/10.1007/978-3-642-01899-2",
+      "status": "active",
+      "query": "Comprehensive quasicrystal structure and property reference",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-037",
+      "name": "Dubois - Useful Quasicrystals (Book)",
+      "type": "book",
+      "url": "https://www.worldscientific.com/worldscibooks/10.1142/7039",
+      "status": "active",
+      "query": "Quasicrystal properties and applications including anomalous behavior",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-038",
+      "name": "Acta Crystallographica Section A",
+      "type": "journal",
+      "url": "https://journals.iucr.org/a",
+      "status": "active",
+      "query": "Space group classification reviews and point group subgroup hierarchy",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-039",
+      "name": "Philosophical Magazine (Historical Kelvin/Tait content)",
+      "type": "journal",
+      "url": "https://www.tandfonline.com/journals/tphm20",
+      "status": "active",
+      "query": "Kelvin vortex atom AND historical AND Lord Kelvin 1867",
+      "verified_at": "2025-07-14"
+    },
+    {
+      "id": "S-040",
+      "name": "Semiconductors and Semimetals (Book Series)",
+      "type": "book",
+      "url": "https://www.elsevier.com/books-and-journals",
+      "status": "planned",
+      "query": "Dilute magnetic semiconductors and ferromagnetism symmetry analysis",
+      "verified_at": "2025-07-14"
+    }
+  ],
+  "count": 40,
+  "generated": "2026-04-08T16:11:11+00:00"
+}

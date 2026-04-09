@@ -1,0 +1,41 @@
+{
+  "passed": false,
+  "errors": [
+    "CRITICAL: num_classes dimension mismatch between data and models. DATA_CONFIG defines num_classes=4 (A, B, C, D multiple choice) and labels are 0-3, but get_baselines() calls with num_classes=57 (number of subjects). The model will output 57 logits but labels are 0-3, causing training/evaluation to be completely wrong.",
+    "ERROR: Manual LoRA fallback in LoRATransformerClassifier._inject_manual_lora() creates self.lora_layers but never applies them in forward(). The forward pass only calls self.backbone() without adding the low-rank delta, making the fallback completely non-functional.",
+    "ERROR: QLoRATransformerClassifier calls self.backbone = self.backbone.to(torch.float32) after 4-bit quantization, which defeats the purpose of quantization and may cause errors with BitsAndBytes tensors that cannot be cast this way.",
+    "WARNING: Hardcoded path '/workspace/data' appears in DATA_CONFIG['cache_dir'], get_datasets() default, load_mmlu() default, and setup script instead of using a shared constant. The DATA_CONFIG cache_dir is never actually referenced by the loading code.",
+    "WARNING: AugmentationTransform.__init__ creates self.rng (numpy RandomState) but __call__ delegates to _apply_augmentation which uses random.shuffle (stdlib) instead of self.rng, so the seed parameter has no effect on shuffle_choices augmentation.",
+    "WARNING: In _apply_augmentation with 'shuffle_choices', the shuffled_indices.index(label) finds where the original label index ended up, but this is the position in the shuffled list, not the new answer label. The logic should track where the correct choice moved to, which happens to be correct but is confusing and fragile."
+  ],
+  "warnings": [],
+  "severity": "error",
+  "llm_review": {
+    "passed": false,
+    "issues": [
+      "CRITICAL: num_classes dimension mismatch between data and models. DATA_CONFIG defines num_classes=4 (A, B, C, D multiple choice) and labels are 0-3, but get_baselines() calls with num_classes=57 (number of subjects). The model will output 57 logits but labels are 0-3, causing training/evaluation to be completely wrong.",
+      "ERROR: Manual LoRA fallback in LoRATransformerClassifier._inject_manual_lora() creates self.lora_layers but never applies them in forward(). The forward pass only calls self.backbone() without adding the low-rank delta, making the fallback completely non-functional.",
+      "ERROR: QLoRATransformerClassifier calls self.backbone = self.backbone.to(torch.float32) after 4-bit quantization, which defeats the purpose of quantization and may cause errors with BitsAndBytes tensors that cannot be cast this way.",
+      "WARNING: Hardcoded path '/workspace/data' appears in DATA_CONFIG['cache_dir'], get_datasets() default, load_mmlu() default, and setup script instead of using a shared constant. The DATA_CONFIG cache_dir is never actually referenced by the loading code.",
+      "WARNING: AugmentationTransform.__init__ creates self.rng (numpy RandomState) but __call__ delegates to _apply_augmentation which uses random.shuffle (stdlib) instead of self.rng, so the seed parameter has no effect on shuffle_choices augmentation.",
+      "WARNING: In _apply_augmentation with 'shuffle_choices', the shuffled_indices.index(label) finds where the original label index ended up, but this is the position in the shuffled list, not the new answer label. The logic should track where the correct choice moved to, which happens to be correct but is confusing and fragile."
+    ],
+    "suggestions": [
+      "Fix num_classes to 4 in get_baselines() call (or pass it from DATA_CONFIG). The MMLU task is 4-way multiple choice classification, not 57-way subject classification.",
+      "For the manual LoRA fallback, either hook into the forward pass (via register_forward_hook or monkey-patching) or ensure forward() adds the LoRA delta: output = base_output + (B @ A @ x) * scaling.",
+      "Remove the blanket .to(torch.float32) on the quantized backbone in QLoRA. Instead, use prepare_model_for_kbit_training() which handles dtype casting of specific layers (layernorms) appropriately.",
+      "Define DATA_ROOT as a module-level constant and reference it consistently across DATA_CONFIG, get_datasets(), load_mmlu(), and the setup script.",
+      "Fix AugmentationTransform to use its self.rng for reproducible shuffling, or use random.seed() within the transform call.",
+      "Consider adding a validation assertion in get_baselines() that num_classes matches DATA_CONFIG['num_classes'] to catch this class of error at initialization time."
+    ],
+    "severity": "error"
+  },
+  "suggestions": [
+    "Fix num_classes to 4 in get_baselines() call (or pass it from DATA_CONFIG). The MMLU task is 4-way multiple choice classification, not 57-way subject classification.",
+    "For the manual LoRA fallback, either hook into the forward pass (via register_forward_hook or monkey-patching) or ensure forward() adds the LoRA delta: output = base_output + (B @ A @ x) * scaling.",
+    "Remove the blanket .to(torch.float32) on the quantized backbone in QLoRA. Instead, use prepare_model_for_kbit_training() which handles dtype casting of specific layers (layernorms) appropriately.",
+    "Define DATA_ROOT as a module-level constant and reference it consistently across DATA_CONFIG, get_datasets(), load_mmlu(), and the setup script.",
+    "Fix AugmentationTransform to use its self.rng for reproducible shuffling, or use random.seed() within the transform call.",
+    "Consider adding a validation assertion in get_baselines() that num_classes matches DATA_CONFIG['num_classes'] to catch this class of error at initialization time."
+  ]
+}

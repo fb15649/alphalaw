@@ -1,0 +1,13 @@
+{
+  "run_id": "run-1",
+  "task_id": "sandbox-main",
+  "status": "failed",
+  "metrics": {
+    "Epochs": 100.0
+  },
+  "elapsed_sec": 1.9482271657325327,
+  "stdout": "==========================================================================================\nAETHER PROPERTY DERIVATION EXPERIMENT\n==========================================================================================\n\nConfiguration:\n  Device: mps\n  Seeds: [42, 123, 456, 789, 1024]\n  Epochs: 100\n  Batch size: 64\n  Learning rate: 0.001\n  Max hours: 4\n\n--- BASELINE MODELS ---\n  Maxwell_Proving_baseline_1: MaxwellBaseline\n  Linearized_Proving_baseline_2: LinearizedAetherModel\n\n--- PROPOSED MODELS ---\n  Lorentz_Proving_proposed: LorentzEtherModel\n  Dirac_Proving_variant: DiracAetherModel\n\n--- ABLATION MODELS ---\n  NoViscosity_Ablation: NoViscosityAetherModel\n  Superfluid_Ablation: SuperfluidVacuumModel\n\n============================================================\nRunning experiments for: Maxwell_Proving_baseline_1\n============================================================\n    Running seed 42...\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/Volumes/Backup/Python_projects/AutoResearchClaw/artifacts/rc-20260323-140533-f5d417/stage-12/runs/sandbox/_project_1/main.py\", line 337, in <module>\n    main()\n  File \"/Volumes/Backup/Python_projects/AutoResearchClaw/artifacts/rc-20260323-140533-f5d417/stage-12/runs/sandbox/_project_1/main.py\", line 306, in main\n    results = run_multi_seed_experiment(\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/Backup/Python_projects/AutoResearchClaw/artifacts/rc-20260323-140533-f5d417/stage-12/runs/sandbox/_project_1/main.py\", line 142, in run_multi_seed_experiment\n    seed_results = run_single_experiment(\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/Backup/Python_projects/AutoResearchClaw/artifacts/rc-20260323-140533-f5d417/stage-12/runs/sandbox/_project_1/main.py\", line 88, in run_single_experiment\n    trainer = Trainer(model, config)\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/Backup/Python_projects/AutoResearchClaw/artifacts/rc-20260323-140533-f5d417/stage-12/runs/sandbox/_project_1/training.py\", line 35, in __init__\n    self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: ReduceLROnPlateau.__init__() got an unexpected keyword argument 'verbose'\n",
+  "timed_out": false,
+  "completed_at": "2026-03-23T22:34:52+00:00"
+}

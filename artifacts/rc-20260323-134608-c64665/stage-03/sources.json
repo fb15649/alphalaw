@@ -1,0 +1,114 @@
+{
+  "sources": [
+    {
+      "id": "SRC-001",
+      "name": "Standard-Model Extension (SME) Framework",
+      "type": "theoretical_framework",
+      "url": "https://arxiv.org/abs/hep-ph/9803426",
+      "status": "verified",
+      "query": "SME Lorentz violation comprehensive framework",
+      "verified_at": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "SRC-002",
+      "name": "Einstein-aether Theory Formalism",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/gr-qc/0007037",
+      "status": "verified",
+      "query": "Einstein aether theory Lorentz violation gravity",
+      "verified_at": "2024-01-15T10:35:00Z"
+    },
+    {
+      "id": "SRC-003",
+      "name": "Ho\u0159ava-Lifshitz Quantum Gravity",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/0901.3775",
+      "status": "verified",
+      "query": "Horava Lifshitz gravity emergent Lorentz",
+      "verified_at": "2024-01-15T10:40:00Z"
+    },
+    {
+      "id": "SRC-004",
+      "name": "GW170817 Multimessenger Constraints on Graviton",
+      "type": "experimental_paper",
+      "url": "https://arxiv.org/abs/1710.05834",
+      "status": "verified",
+      "query": "GW170817 graviton mass Lorentz violation constraints",
+      "verified_at": "2024-01-15T10:45:00Z"
+    },
+    {
+      "id": "SRC-005",
+      "name": "Fermi-LAT Gamma-Ray Burst Time-Delay Analysis",
+      "type": "experimental_paper",
+      "url": "https://arxiv.org/abs/0908.1832",
+      "status": "verified",
+      "query": "Fermi LAT gamma ray burst Lorentz violation dispersion",
+      "verified_at": "2024-01-15T10:50:00Z"
+    },
+    {
+      "id": "SRC-006",
+      "name": "Analog Gravity in Bose-Einstein Condensates",
+      "type": "experimental_theoretical",
+      "url": "https://arxiv.org/abs/0711.1083",
+      "status": "verified",
+      "query": "BEC analog gravity emergent Lorentz phonon",
+      "verified_at": "2024-01-15T10:55:00Z"
+    },
+    {
+      "id": "SRC-007",
+      "name": "Emergent Gravity from Quantum Vacuum",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/1001.3668",
+      "status": "verified",
+      "query": "emergent gravity quantum vacuum entropic",
+      "verified_at": "2024-01-15T11:00:00Z"
+    },
+    {
+      "id": "SRC-008",
+      "name": "Michelson-Morley Experimental Foundation",
+      "type": "historical_experimental",
+      "url": "https://doi.org/10.24275/uam/dad/2022-14.2/11",
+      "status": "verified",
+      "query": "Michelson Morley aether historical experiment",
+      "verified_at": "2024-01-15T11:05:00Z"
+    },
+    {
+      "id": "SRC-009",
+      "name": "Cosmological Constant from Vacuum Fluctuations",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/1502.05633",
+      "status": "verified",
+      "query": "cosmological constant problem vacuum energy regularization",
+      "verified_at": "2024-01-15T11:10:00Z"
+    },
+    {
+      "id": "SRC-010",
+      "name": "Modified Dispersion Relations in Loop Quantum Gravity",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/gr-qc/0504094",
+      "status": "verified",
+      "query": "loop quantum gravity modified dispersion relation",
+      "verified_at": "2024-01-15T11:15:00Z"
+    },
+    {
+      "id": "SRC-011",
+      "name": "High-Precision Resonator Tests of Lorentz Symmetry",
+      "type": "experimental_paper",
+      "url": "https://arxiv.org/abs/1504.07263",
+      "status": "verified",
+      "query": "resonator Lorentz violation precision test",
+      "verified_at": "2024-01-15T11:20:00Z"
+    },
+    {
+      "id": "SRC-012",
+      "name": "Quantum Vacuum as Structured Medium",
+      "type": "theoretical_paper",
+      "url": "https://arxiv.org/abs/1204.2947",
+      "status": "verified",
+      "query": "quantum vacuum structure medium electromagnetism",
+      "verified_at": "2024-01-15T11:25:00Z"
+    }
+  ],
+  "count": 12,
+  "generated": "2026-03-23T13:50:57+00:00"
+}

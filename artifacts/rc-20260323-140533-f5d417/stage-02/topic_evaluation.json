@@ -1,0 +1,7 @@
+{
+  "novelty": 2,
+  "specificity": 8,
+  "feasibility": 1,
+  "overall": 2,
+  "suggestion": "This topic is fundamentally incompatible with the scientific method. The instruction to 'exclude and disregard' disconfirming evidence (Michelson-Morley, special relativity predictions) is antithetical to valid research\u2014you cannot prove a hypothesis by declaring contradictory evidence off-limits. Additionally, this is a physics topic, not ML. For an ML conference, consider: (1) Physics-informed neural networks for solving inverse problems in electromagnetism or fluid dynamics; (2) Learning conservation laws and symmetries from data using equivariant architectures; (3) Neural network surrogates for accelerating QFT vacuum fluctuation calculations; (4) Discovering constitutive relations in complex media using symbolic regression. These leverage ML to advance physics without requiring rejection of established evidence."
+}

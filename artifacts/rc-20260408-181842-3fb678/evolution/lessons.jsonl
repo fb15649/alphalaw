@@ -1,0 +1,1 @@
+{"stage_name": "paper_outline", "stage_num": 16, "category": "writing", "severity": "error", "description": "Stage paper_outline failed: Missing input: analysis.md (required by PAPER_OUTLINE)", "timestamp": "2026-04-08T18:18:42+00:00", "run_id": "rc-20260408-181842-3fb678"}

@@ -1,0 +1,93 @@
+{
+  "decisions": [
+    {
+      "section": "Method",
+      "figure_type": "framework_diagram",
+      "backend": "image",
+      "description": "Unified theoretical framework showing relationships between four aether theories (Lorentz ether theory, Dirac 1951 aether model, superfluid vacuum theory, Einstein-Aether theory) with arrows indicating parameter mappings and phenomenological connections to modern physics equations (Maxwell, Einstein field equations, QFT vacuum energy)",
+      "priority": 1
+    },
+    {
+      "section": "Method",
+      "figure_type": "pipeline_overview",
+      "backend": "image",
+      "description": "Three-hypothesis testing pipeline showing sequential validation: H3 (framework mapping) → H2 (parameter collapse) → H1 (GW dispersion), with decision gates and failure conditions at each stage",
+      "priority": 1
+    },
+    {
+      "section": "Results",
+      "figure_type": "scatter_plot",
+      "backend": "code",
+      "description": "Gravitational wave chirp mass discrepancy vs luminosity distance for BNS mergers (GW170817, GW190425, O4/O5 events), showing linear fit with slope k and confidence intervals testing aether viscosity hypothesis",
+      "priority": 1
+    },
+    {
+      "section": "Results",
+      "figure_type": "heatmap",
+      "backend": "code",
+      "description": "Einstein-Aether parameter constraint map showing 2D slices of (c₁, c₂, c₃, c₄) space with shaded regions excluded by GW170817 speed constraint, binary pulsar bounds, CMB constraints, and large-scale structure data",
+      "priority": 1
+    },
+    {
+      "section": "Results",
+      "figure_type": "bar_comparison",
+      "backend": "code",
+      "description": "Performance comparison of proposed aether-incorporated model vs baselines showing primary metric scores (baseline_1: 1.0, baseline_2: 0.040, proposed: 0.051) with error bars",
+      "priority": 2
+    },
+    {
+      "section": "Results",
+      "figure_type": "scatter_plot",
+      "backend": "code",
+      "description": "Cross-framework parameter mapping between superfluid vacuum parameters (healing length ξ, sound speed cₛ, circulation quantum κ) and Einstein-Aether coefficients (c₁, c₂, c₃, c₄), showing allowed vs excluded regions",
+      "priority": 2
+    }
+  ],
+  "code_figures": [
+    {
+      "section": "Results",
+      "figure_type": "scatter_plot",
+      "backend": "code",
+      "description": "Gravitational wave chirp mass discrepancy vs luminosity distance for BNS mergers (GW170817, GW190425, O4/O5 events), showing linear fit with slope k and confidence intervals testing aether viscosity hypothesis",
+      "priority": 1
+    },
+    {
+      "section": "Results",
+      "figure_type": "heatmap",
+      "backend": "code",
+      "description": "Einstein-Aether parameter constraint map showing 2D slices of (c₁, c₂, c₃, c₄) space with shaded regions excluded by GW170817 speed constraint, binary pulsar bounds, CMB constraints, and large-scale structure data",
+      "priority": 1
+    },
+    {
+      "section": "Results",
+      "figure_type": "bar_comparison",
+      "backend": "code",
+      "description": "Performance comparison of proposed aether-incorporated model vs baselines showing primary metric scores (baseline_1: 1.0, baseline_2: 0.040, proposed: 0.051) with error bars",
+      "priority": 2
+    },
+    {
+      "section": "Results",
+      "figure_type": "scatter_plot",
+      "backend": "code",
+      "description": "Cross-framework parameter mapping between superfluid vacuum parameters (healing length ξ, sound speed cₛ, circulation quantum κ) and Einstein-Aether coefficients (c₁, c₂, c₃, c₄), showing allowed vs excluded regions",
+      "priority": 2
+    }
+  ],
+  "image_figures": [
+    {
+      "section": "Method",
+      "figure_type": "framework_diagram",
+      "backend": "image",
+      "description": "Unified theoretical framework showing relationships between four aether theories (Lorentz ether theory, Dirac 1951 aether model, superfluid vacuum theory, Einstein-Aether theory) with arrows indicating parameter mappings and phenomenological connections to modern physics equations (Maxwell, Einstein field equations, QFT vacuum energy)",
+      "priority": 1
+    },
+    {
+      "section": "Method",
+      "figure_type": "pipeline_overview",
+      "backend": "image",
+      "description": "Three-hypothesis testing pipeline showing sequential validation: H3 (framework mapping) → H2 (parameter collapse) → H1 (GW dispersion), with decision gates and failure conditions at each stage",
+      "priority": 1
+    }
+  ],
+  "total": 6
+}

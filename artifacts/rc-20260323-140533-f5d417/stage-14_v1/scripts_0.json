@@ -1,0 +1,20 @@
+[
+  {
+    "figure_id": "fig_main_results",
+    "chart_type": "bar_comparison",
+    "output_filename": "fig_main_results.png",
+    "title": "Method Comparison",
+    "caption": "Comparison of primary metric across all evaluated methods. Error bars show 95% confidence intervals.",
+    "section": "results",
+    "width": "single_column"
+  },
+  {
+    "figure_id": "fig_multi_metric",
+    "chart_type": "grouped_bar",
+    "output_filename": "fig_multi_metric.png",
+    "title": "Multi-Metric Comparison",
+    "caption": "Performance comparison across multiple evaluation metrics.",
+    "section": "analysis",
+    "width": "double_column"
+  }
+]

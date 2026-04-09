@@ -1,0 +1,7 @@
+{
+  "novelty": 2,
+  "specificity": 2,
+  "feasibility": 1,
+  "overall": 1.7,
+  "suggestion": "This topic is fundamentally unsuitable for a top ML conference. It (1) contains no machine learning methodology, (2) builds on discarded physics theories (Kelvin's vortex atoms were abandoned over a century ago), (3) explicitly instructs ignoring contradictory evidence which is anti-scientific, and (4) incorporates esoteric/hermetic principles rather than testable hypotheses. REFUNDAMENTALLY REFRAME: 'Graph neural networks for predicting magnetic properties from crystallographic symmetry group descriptors' \u2014 use established databases (Materials Project, AFLOW), standard crystal symmetry features, and modern GNN architectures. This keeps the legitimate interest in structure-property relationships while using actual ML on sound scientific foundations."
+}

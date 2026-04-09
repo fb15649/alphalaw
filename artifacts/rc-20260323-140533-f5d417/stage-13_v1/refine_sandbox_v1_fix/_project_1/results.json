@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "Proving_baseline_1_loss": 2.6818161445442965e-21,
+    "Proving_baseline_1_primary_metric": 0.8999999999999999,
+    "Proving_baseline_1_secondary_metric": 0.5,
+    "Proving_baseline_2_loss": 23.997336387634277,
+    "Proving_baseline_2_primary_metric": 0.1685577117222002,
+    "Proving_baseline_2_secondary_metric": -11.735898334139264,
+    "Proving_proposed_loss": 29.574606895446777,
+    "Proving_proposed_primary_metric": 0.05312525396164236,
+    "Proving_proposed_secondary_metric": -14.450677705325804,
+    "Proving_variant_loss": 33.23921171824137,
+    "Proving_variant_primary_metric": 0.5116582296199574,
+    "Proving_variant_secondary_metric": -16.256148015499406,
+    "without_key_component_loss": 23.997336387634277,
+    "without_key_component_primary_metric": 0.31600170489950724,
+    "without_key_component_secondary_metric": -11.736432049598646,
+    "simplified_version_loss": 23.99732557932536,
+    "simplified_version_primary_metric": 0.06382785271378995,
+    "simplified_version_secondary_metric": -11.735255493859436
+  },
+  "elapsed_sec": 168.45,
+  "time_budget_sec": 14400,
+  "steps_completed": 0,
+  "nan_count": 0
+}

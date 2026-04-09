@@ -1,0 +1,231 @@
+{
+  "sources": [
+    {
+      "id": "src_arxiv",
+      "name": "arXiv Preprint Server",
+      "type": "preprint_repository",
+      "url": "https://arxiv.org",
+      "status": "active",
+      "query": "(\"toroidal vortex\" OR \"superfluid vacuum\" OR \"knot soliton\" OR \"vortex atom\" OR \"Faddeev-Niemi\") AND (cond-mat OR hep-th OR math-ph OR physics.flu-dyn)",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_inspire_hep",
+      "name": "INSPIRE-HEP",
+      "type": "bibliographic_database",
+      "url": "https://inspirehep.net",
+      "status": "active",
+      "query": "find a \"Volovik\" or a \"Sbitnev\" or a \"Zloshchastiev\" or t \"Skyrmion Platonic\" or t \"knot soliton field theory\"",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_web_of_science",
+      "name": "Web of Science (Clarivate)",
+      "type": "bibliographic_database",
+      "url": "https://www.webofscience.com",
+      "status": "active",
+      "query": "TS=(\"crystal symmetry\" AND \"material property\" AND \"correlation\") OR TS=(\"quasicrystal\" AND \"icosahedral\" AND \"anomalous\")",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_scopus",
+      "name": "Scopus (Elsevier)",
+      "type": "bibliographic_database",
+      "url": "https://www.scopus.com",
+      "status": "active",
+      "query": "TITLE-ABS-KEY(\"space group\" AND \"property prediction\" AND \"symmetry\") AND SRCTYPE(j)",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_google_scholar",
+      "name": "Google Scholar",
+      "type": "search_engine",
+      "url": "https://scholar.google.com",
+      "status": "active",
+      "query": "\"toroidal vortex\" \"molecular geometry\" OR \"Kelvin vortex atom\" OR \"Williamson van der Mark electron toroidal\"",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_mathscinet",
+      "name": "MathSciNet (AMS)",
+      "type": "bibliographic_database",
+      "url": "https://mathscinet.ams.org",
+      "status": "active",
+      "query": "\"knot theory\" AND \"field theory\" AND (\"soliton\" OR \"topological defect\")",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_semantic_scholar",
+      "name": "Semantic Scholar (AI2)",
+      "type": "search_engine",
+      "url": "https://www.semanticscholar.org",
+      "status": "active",
+      "query": "superfluid vacuum topological defect particle model OR Platonic solid Skyrmion nuclear",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_materials_project",
+      "name": "Materials Project Database",
+      "type": "materials_database",
+      "url": "https://materialsproject.org",
+      "status": "active",
+      "query": "API query: spacegroup.number AND properties.magnetic_type AND properties.band_gap AND properties.total_magnetization",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_icsd",
+      "name": "Inorganic Crystal Structure Database (ICSD)",
+      "type": "crystallographic_database",
+      "url": "https://icsd.fiz-karlsruhe.de",
+      "status": "active",
+      "query": "Space group filter: All 230 groups with symmetry subgroup decomposition data",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_aflow",
+      "name": "AFLOW (Automatic FLOW for Materials Discovery)",
+      "type": "materials_database",
+      "url": "http://www.aflowlib.org",
+      "status": "active",
+      "query": "REST API: species, spacegroup, prototype AND properties (band_gap, magnetic, hardness)",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_oqmd",
+      "name": "Open Quantum Materials Database (OQMD)",
+      "type": "materials_database",
+      "url": "http://www.oqmd.org",
+      "status": "active",
+      "query": "API query: crystal structure + formation energy + band gap + magnetic moment",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_pauling_file",
+      "name": "Pauling File (MPDS)",
+      "type": "crystallographic_database",
+      "url": "https://paulingfile.com",
+      "status": "active",
+      "query": "Quasicrystal entries with icosahedral symmetry and measured properties",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_tokyo_qcd",
+      "name": "Tokyo Quasicrystal Database",
+      "type": "specialized_database",
+      "url": "http://www.quasi.crystal.t.u-tokyo.ac.jp",
+      "status": "uncertain",
+      "query": "All entries: structure type, composition, symmetry, measured properties",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_jstor",
+      "name": "JSTOR",
+      "type": "digital_library",
+      "url": "https://www.jstor.org",
+      "status": "active",
+      "query": "\"vortex atom\" AND \"history\" AND (\"Kelvin\" OR \"Thomson\") AND \"physics\"",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_philpapers",
+      "name": "PhilPapers",
+      "type": "bibliographic_database",
+      "url": "https://philpapers.org",
+      "status": "active",
+      "query": "aether OR ether AND physics AND (history OR philosophy) AND NOT cryptocurrency",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_proquest_diss",
+      "name": "ProQuest Dissertations & Theses",
+      "type": "dissertation_database",
+      "url": "https://www.proquest.com/dissertations",
+      "status": "active",
+      "query": "superfluid vacuum theory OR vortex topology condensed matter OR Platonic symmetry materials",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_pubmed",
+      "name": "PubMed / MEDLINE",
+      "type": "bibliographic_database",
+      "url": "https://pubmed.ncbi.nlm.nih.gov",
+      "status": "active",
+      "query": "\"fullerene\" OR \"C60\" OR \"icosahedral virus\" AND (\"topology\" OR \"symmetry\") AND (\"stability\" OR \"structure\")",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_citeseerx",
+      "name": "CiteSeerX (PSU)",
+      "type": "search_engine",
+      "url": "https://citeseerx.ist.psu.edu",
+      "status": "active",
+      "query": "\"vortex dynamics\" AND \"knot topology\" AND \"ideal fluid\" AND \"stability\"",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_biorxiv",
+      "name": "bioRxiv (for icosahedral virus capsid literature)",
+      "type": "preprint_repository",
+      "url": "https://www.biorxiv.org",
+      "status": "active",
+      "query": "icosahedral symmetry virus capsid stability topology",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_nasa_ads",
+      "name": "NASA Astrophysics Data System (ADS)",
+      "type": "bibliographic_database",
+      "url": "https://ui.adsabs.harvard.edu",
+      "status": "active",
+      "query": "\"dodecahedral\" AND (\"universe\" OR \"Poincar\u00e9\" OR \"cosmic topology\") AND (\"CMB\" OR \"WMAP\" OR \"Planck\")",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_crossref",
+      "name": "Crossref Metadata API",
+      "type": "metadata_service",
+      "url": "https://api.crossref.org",
+      "status": "active",
+      "query": "DOI resolution and citation metadata for all seed papers (Volovik 2003, Battye-Sutcliffe 2002, Williamson-vdMark 1997, etc.)",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_opencitations",
+      "name": "OpenCitations COCI",
+      "type": "citation_index",
+      "url": "https://opencitations.net",
+      "status": "active",
+      "query": "Citation chaining from seed DOIs: 10.1093/acprof:oso/9780198507824 (Volovik), 10.1088/0305-4470/30/4/017 (Williamson-vdMark)",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_codata",
+      "name": "CODATA / Landolt-B\u00f6rnstein",
+      "type": "data_compilation",
+      "url": "https://www.landolt-boernstein.com",
+      "status": "active",
+      "query": "Numerical data on magnetic susceptibility, conductivity, hardness, melting point by crystal structure",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_nist_matdb",
+      "name": "NIST Materials Data Repository",
+      "type": "materials_database",
+      "url": "https://materialsdata.nist.gov",
+      "status": "active",
+      "query": "Crystal structure + measured thermodynamic, mechanical, electromagnetic properties",
+      "verified_at": "2025-01-18T00:00:00Z"
+    },
+    {
+      "id": "src_springer_materials",
+      "name": "SpringerMaterials (Landolt-B\u00f6rnstein)",
+      "type": "data_compilation",
+      "url": "https://materials.springer.com",
+      "status": "active",
+      "query": "Inorganic compounds with crystal structure data and physical property measurements",
+      "verified_at": "2025-01-18T00:00:00Z"
+    }
+  ],
+  "count": 25,
+  "generated": "2026-04-08T15:46:04+00:00"
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "figure_id": "fig_main_results",
+    "chart_type": "bar_comparison",
+    "title": "Method Comparison",
+    "caption": "Comparison of primary metric across all evaluated methods. Error bars show 95% confidence intervals.",
+    "data_source": {
+      "type": "condition_comparison",
+      "metric": "primary_metric"
+    },
+    "x_label": "Method",
+    "y_label": "Primary Metric",
+    "width": "single_column",
+    "priority": 1,
+    "section": "results"
+  },
+  {
+    "figure_id": "fig_multi_metric",
+    "chart_type": "grouped_bar",
+    "title": "Multi-Metric Comparison",
+    "caption": "Performance comparison across multiple evaluation metrics.",
+    "data_source": {
+      "type": "multi_metric",
+      "metrics": [
+        "Epochs",
+        "Proving_baseline_1_loss",
+        "Proving_baseline_1_primary_metric",
+        "Proving_baseline_1_secondary_metric",
+        "Proving_baseline_1/42/primary_metric"
+      ]
+    },
+    "x_label": "Method",
+    "y_label": "Score",
+    "width": "double_column",
+    "priority": 2,
+    "section": "analysis"
+  }
+]
