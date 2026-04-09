@@ -11,10 +11,72 @@ st.set_page_config(
     layout="wide",
 )
 
-# ── Data (inline to avoid import issues on deploy) ──────────────────────
+# ── i18n ────────────────────────────────────────────────────────────────
+
+T = {
+    "title": {"en": "⚛️ α-Law Calculator", "ru": "⚛️ Калькулятор α-закона"},
+    "subtitle": {
+        "en": "**Reserve Law of Chemical Bonding**: $E(n) = E_1 \\times n^\\alpha$\n\n"
+              "Where $\\alpha > 1$ means synergy (each bond strengthens the next) "
+              "and $\\alpha < 1$ means diminishing returns.",
+        "ru": "**Закон Резерва химической связи**: $E(n) = E_1 \\times n^\\alpha$\n\n"
+              "Где $\\alpha > 1$ — синергия (каждая связь усиливает следующую), "
+              "а $\\alpha < 1$ — убывающая отдача.",
+    },
+    "select": {"en": "Select elements", "ru": "Выберите элементы"},
+    "elem1": {"en": "Element 1", "ru": "Элемент 1"},
+    "elem2": {"en": "Element 2", "ru": "Элемент 2"},
+    "no_data": {"en": "No data for", "ru": "Нет данных для"},
+    "regime": {"en": "Regime", "ru": "Режим"},
+    "synergy": {"en": "Synergy", "ru": "Синергия"},
+    "diminishing": {"en": "Diminishing returns", "ru": "Убывающая отдача"},
+    "lp0": {
+        "en": "**LP = 0** — No recruitable reserve. All electrons in bonds → each additional bond order weaker.",
+        "ru": "**LP = 0** — Нет рекрутируемого резерва. Все электроны в связях → каждый следующий порядок слабее.",
+    },
+    "lp1": {
+        "en": "**LP = {lp}** — Has reserve! Lone pairs available for π-bonding → synergy.",
+        "ru": "**LP = {lp}** — Есть резерв! Неподелённые пары доступны для π-связей → синергия.",
+    },
+    "dblock": {
+        "en": "**d-block** — d-electrons form δ-bonds with poor overlap → always diminishing returns.",
+        "ru": "**d-блок** — d-электроны формируют δ-связи с плохим перекрыванием → всегда убывающая отдача.",
+    },
+    "source": {"en": "Source", "ru": "Источник"},
+    "scaling": {"en": "Bond energy scaling", "ru": "Масштабирование энергии связи"},
+    "energies": {"en": "Energies (kJ/mol)", "ru": "Энергии (кДж/моль)"},
+    "bond_order": {"en": "Bond order", "ru": "Порядок связи"},
+    "e_actual": {"en": "E actual", "ru": "E факт"},
+    "e_predicted": {"en": "E predicted", "ru": "E расчёт"},
+    "error_pct": {"en": "Error %", "ru": "Ошибка %"},
+    "full_table": {"en": "📊 Full bond table (23 bonds)", "ru": "📊 Полная таблица связей (23)"},
+    "bond": {"en": "Bond", "ru": "Связь"},
+    "block": {"en": "Block", "ru": "Блок"},
+    "reserve": {"en": "Reserve", "ru": "Резерв"},
+    "yes": {"en": "YES", "ru": "ДА"},
+    "no": {"en": "NO", "ru": "НЕТ"},
+    "stats": {
+        "en": "**Statistics:**\n- LP=0 → α<1: 93% (13/14)\n- LP≥1 → α>1: 80% (4/5)\n- d-block → α<1: 100% (4/4)",
+        "ru": "**Статистика:**\n- LP=0 → α<1: 93% (13/14)\n- LP≥1 → α>1: 80% (4/5)\n- d-блок → α<1: 100% (4/4)",
+    },
+    "about_title": {"en": "About", "ru": "О проекте"},
+    "about": {
+        "en": "The **Reserve Law** states that systems with recruitable reserve show cooperative scaling (α > 1), "
+              "while systems without reserve show diminishing returns (α < 1).\n\n"
+              "- **Paper**: Reserve Law of Chemical Bonding (Y. Kazin, 2026)\n"
+              "- **Code**: `pip install alphalaw`\n"
+              "- **Contact**: y.kazin@kazin.ru",
+        "ru": "**Закон Резерва** гласит: системы с рекрутируемым резервом показывают синергию (α > 1), "
+              "а без резерва — убывающую отдачу (α < 1).\n\n"
+              "- **Статья**: Закон Резерва химической связи (Ю. Казин, 2026)\n"
+              "- **Код**: `pip install alphalaw`\n"
+              "- **Контакт**: y.kazin@kazin.ru",
+    },
+}
+
+# ── Data ────────────────────────────────────────────────────────────────
 
 BONDS = {
-    # s/p block: (α, LP_min, block, energies_dict, source)
     ("C", "C"):   (0.770, 0, "s/p", {1:346, 2:614, 3:839}, "CRC Handbook"),
     ("Si", "Si"): (0.485, 0, "s/p", {1:310, 2:434}, "CRC"),
     ("Ge", "Ge"): (0.407, 0, "s/p", {1:264, 2:350}, "CRC"),
@@ -34,7 +96,6 @@ BONDS = {
     ("C", "S"):   (1.075, 0, "s/p", {1:272, 2:573}, "CRC"),
     ("C", "P"):   (0.958, 0, "s/p", {1:264, 2:513}, "CRC"),
     ("Ge", "O"):  (0.520, 0, "s/p", {1:401, 2:575}, "CRC"),
-    # d-block
     ("Cr", "Cr"): (0.559, -1, "d", {1:70, 4:152}, "Cotton; CRC"),
     ("Mo", "Mo"): (0.651, -1, "d", {1:140, 2:250, 3:350, 4:405, 5:420, 6:435}, "Cotton & Murillo 2005"),
     ("W", "W"):   (0.830, -1, "d", {1:160, 3:500, 4:570, 6:666}, "CRC; Cotton"),
@@ -46,51 +107,55 @@ def lookup(e1, e2):
 
 ALL_ELEMENTS = sorted(set(e for pair in BONDS for e in pair))
 
+# ── Language selector ───────────────────────────────────────────────────
+
+lang = st.sidebar.radio("🌐 Language / Язык", ["English", "Русский"],
+                        index=0, horizontal=True)
+L = "ru" if lang == "Русский" else "en"
+
+def t(key, **kwargs):
+    text = T.get(key, {}).get(L, key)
+    if kwargs:
+        text = text.format(**kwargs)
+    return text
+
 # ── UI ──────────────────────────────────────────────────────────────────
 
-st.title("⚛️ α-Law Calculator")
-st.markdown("""
-**Reserve Law of Chemical Bonding**: $E(n) = E_1 \\times n^\\alpha$
-
-Where $\\alpha > 1$ means synergy (each bond strengthens the next) and $\\alpha < 1$ means diminishing returns.
-""")
+st.title(t("title"))
+st.markdown(t("subtitle"))
 
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st.subheader("Select elements")
-    elem1 = st.selectbox("Element 1", ALL_ELEMENTS, index=ALL_ELEMENTS.index("C"))
-    elem2 = st.selectbox("Element 2", ALL_ELEMENTS, index=ALL_ELEMENTS.index("C"))
+    st.subheader(t("select"))
+    elem1 = st.selectbox(t("elem1"), ALL_ELEMENTS, index=ALL_ELEMENTS.index("C"))
+    elem2 = st.selectbox(t("elem2"), ALL_ELEMENTS, index=ALL_ELEMENTS.index("C"))
 
     data = lookup(elem1, elem2)
 
     if data is None:
-        st.error(f"No data for {elem1}-{elem2}")
+        st.error(f"{t('no_data')} {elem1}-{elem2}")
     else:
         alpha, lp_min, block, energies, source = data
 
-        # Result card
         if alpha > 1:
             color = "🟢"
-            regime = "Synergy"
+            regime = t("synergy")
         else:
             color = "🔴"
-            regime = "Diminishing returns"
+            regime = t("diminishing")
 
-        st.markdown(f"""
-### {color} {elem1}-{elem2}: α = {alpha:.3f}
-**Regime**: {regime}
-""")
+        st.markdown(f"### {color} {elem1}-{elem2}: α = {alpha:.3f}\n**{t('regime')}**: {regime}")
 
         if block == "s/p":
             if lp_min == 0:
-                st.info("**LP = 0** — No recruitable reserve. All electrons in bonds → each additional bond order weaker.")
+                st.info(t("lp0"))
             elif lp_min >= 1:
-                st.success(f"**LP = {lp_min}** — Has reserve! Lone pairs available for π-bonding → synergy.")
+                st.success(t("lp1", lp=lp_min))
         else:
-            st.warning("**d-block** — d-electrons form δ-bonds with poor overlap → always diminishing returns.")
+            st.warning(t("dblock"))
 
-        st.caption(f"Source: {source}")
+        st.caption(f"{t('source')}: {source}")
 
 with col2:
     if data is not None:
@@ -98,80 +163,63 @@ with col2:
         orders = sorted(energies.keys())
         E1 = energies[orders[0]]
 
-        st.subheader(f"Bond energy scaling: {elem1}-{elem2}")
+        st.subheader(f"{t('scaling')}: {elem1}-{elem2}")
 
-        # Build chart data
         import numpy as np
+        import pandas as pd
+        import altair as alt
+
         n_range = np.linspace(orders[0], max(orders[-1], 3), 50)
         E_pred = [E1 * (n / orders[0]) ** alpha for n in n_range]
 
-        chart_data = {"Bond order": list(n_range), "E predicted (kJ/mol)": E_pred}
-
-        # Actual data points
         actual_n = list(energies.keys())
         actual_E = list(energies.values())
 
-        # Use st.line_chart for predicted curve
-        import pandas as pd
         df_pred = pd.DataFrame({"n": n_range, "E = E₁ × n^α": E_pred})
         df_actual = pd.DataFrame({"n": actual_n, "E actual": actual_E})
 
-        import altair as alt
+        x_title = t("bond_order") + " n"
+        y_title = t("energies")
 
         line = alt.Chart(df_pred).mark_line(color="#4C78A8", strokeWidth=2).encode(
-            x=alt.X("n:Q", title="Bond order n"),
-            y=alt.Y("E = E₁ × n^α:Q", title="Bond energy (kJ/mol)"),
+            x=alt.X("n:Q", title=x_title),
+            y=alt.Y("E = E₁ × n^α:Q", title=y_title),
         )
         points = alt.Chart(df_actual).mark_circle(size=120, color="#E45756").encode(
             x="n:Q",
-            y=alt.Y("E actual:Q", title="Bond energy (kJ/mol)"),
+            y=alt.Y("E actual:Q", title=y_title),
             tooltip=["n:Q", "E actual:Q"],
         )
         st.altair_chart((line + points).properties(height=350, width=500),
                          use_container_width=True)
 
-        # Table
-        st.markdown("**Energies (kJ/mol)**")
+        st.markdown(f"**{t('energies')}**")
         rows = []
         for n in orders:
             E_act = energies[n]
             E_p = E1 * (n / orders[0]) ** alpha
-            rows.append({"Bond order": n, "E actual": E_act,
-                          "E predicted": round(E_p, 1),
-                          "Error %": round(100 * (E_p - E_act) / E_act, 1)})
+            rows.append({t("bond_order"): n, t("e_actual"): E_act,
+                          t("e_predicted"): round(E_p, 1),
+                          t("error_pct"): round(100 * (E_p - E_act) / E_act, 1)})
         st.dataframe(pd.DataFrame(rows), hide_index=True)
 
 # ── Full table ──────────────────────────────────────────────────────────
 
 st.markdown("---")
-with st.expander("📊 Full bond table (23 bonds)"):
+with st.expander(t("full_table")):
+    import pandas as pd
     rows = []
     for (e1, e2), (a, lp, blk, ens, src) in sorted(BONDS.items()):
-        reserve = "YES" if (blk == "s/p" and lp >= 1) else "NO"
+        reserve = t("yes") if (blk == "s/p" and lp >= 1) else t("no")
         lp_str = str(lp) if lp >= 0 else "d"
-        regime = "synergy" if a > 1 else "diminishing"
-        rows.append({"Bond": f"{e1}-{e2}", "Block": blk, "α": round(a, 3),
-                      "LP": lp_str, "Reserve": reserve, "Regime": regime})
-    import pandas as pd
+        regime = t("synergy").lower() if a > 1 else t("diminishing").lower()
+        rows.append({t("bond"): f"{e1}-{e2}", t("block"): blk, "α": round(a, 3),
+                      "LP": lp_str, t("reserve"): reserve, t("regime"): regime})
     st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
-
-    st.markdown("""
-    **Statistics:**
-    - LP=0 → α<1: 93% (13/14)
-    - LP≥1 → α>1: 80% (4/5)
-    - d-block → α<1: 100% (4/4)
-    """)
+    st.markdown(t("stats"))
 
 # ── About ───────────────────────────────────────────────────────────────
 
 st.markdown("---")
-st.markdown("""
-### About
-
-The **Reserve Law** states that systems with recruitable reserve show cooperative scaling (α > 1),
-while systems without reserve show diminishing returns (α < 1).
-
-- **Paper**: [Reserve Law of Chemical Bonding](paper_alpha_law.md) (Y. Kazin, 2026)
-- **Code**: `pip install alphalaw` — [GitHub](https://github.com/ykazin/alphalaw)
-- **Contact**: y.kazin@kazin.ru
-""")
+st.markdown(f"### {t('about_title')}")
+st.markdown(t("about"))
