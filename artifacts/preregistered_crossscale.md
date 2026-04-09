@@ -301,3 +301,31 @@ documented and justified in the results file, NOT retroactively edited here.
 
 *This document constitutes a pre-registration of predictions. It is timestamped
 by git commit and must not be modified after the registration date.*
+
+---
+
+## 8. RESULTS (2026-04-10)
+
+### Domain A: Muscle — INCONCLUSIVE
+Literature uses sigmoidal (Hill) fits, NOT power law. No published α values for
+direct comparison. Qualitative direction correct (rested > fatigued steepness).
+Cannot confirm or refute numeric predictions.
+
+### Domain B: Vaccine — INCONCLUSIVE
+Hill coefficients for vaccine dose-response not published as standard practice
+(too few dose points in trials). Indirect estimates: without adjuvant ~0.5-0.8,
+with adjuvant ~1.0-1.5. Direction consistent. Quantitative verification impossible.
+
+### Domain C: Fatigue — PARTIAL FAIL
+- **Untreated |c| ≈ 0.49**: **CONFIRMED** (SAE 1015 steel: 0.47-0.51, within prediction window [0.44, 0.54])
+- **Shot-peened |c| ≈ 0.77**: **NOT CONFIRMED**. Literature shows |c| does NOT change with shot peening in LCF regime. Residual compressive stresses relax under cyclic plastic straining. The "reserve = compressive stress" analogy is physically incorrect for this parameter.
+
+### Overall Verdict: **CRITERION NOT MET**
+- Required: ≥2/3 domains match
+- Achieved: 0 full matches, 2 inconclusive, 1 partial fail
+- **Pre-registered test did NOT confirm the cross-scale hypothesis.**
+
+### Lessons Learned
+1. **Domain selection was poor**: chose fields where power-law is NOT the standard fitting model
+2. **"Reserve" analogy for fatigue was physically wrong**: compressive residual stress relaxes under plastic cycling → not a true "recruitable reserve"
+3. **Better domains for future test**: should choose fields where power-law exponents ARE routinely published (e.g., rheology: shear-thinning η~γ̇^(n-1); population ecology: N~t^r; turbulence: E~k^(-5/3) variants)
