@@ -170,6 +170,152 @@ for b in BONDS:
 ATOMIC_ALPHAS = {b.bond: b.alpha for b in BONDS if b.alpha is not None}
 
 
+# ============================================================
+# Element properties for predictive mode
+# (symbol, period, group, block, valence_e, LP)
+# LP = lone pairs for s/p block; -1 for d/f block
+# ============================================================
+ELEMENTS = {
+    "H":  (1,  1, "s",   1, 0),
+    "He": (1, 18, "s",   2, 1),
+    "Li": (2,  1, "s",   1, 0),
+    "Be": (2,  2, "s",   2, 0),
+    "B":  (2, 13, "s/p", 3, 0),
+    "C":  (2, 14, "s/p", 4, 0),
+    "N":  (2, 15, "s/p", 5, 1),
+    "O":  (2, 16, "s/p", 6, 2),
+    "F":  (2, 17, "s/p", 7, 3),
+    "Ne": (2, 18, "s/p", 8, 4),
+    "Na": (3,  1, "s",   1, 0),
+    "Mg": (3,  2, "s",   2, 0),
+    "Al": (3, 13, "s/p", 3, 0),
+    "Si": (3, 14, "s/p", 4, 0),
+    "P":  (3, 15, "s/p", 5, 1),
+    "S":  (3, 16, "s/p", 6, 2),
+    "Cl": (3, 17, "s/p", 7, 3),
+    "Ar": (3, 18, "s/p", 8, 4),
+    "K":  (4,  1, "s",   1, 0),
+    "Ca": (4,  2, "s",   2, 0),
+    "Sc": (4,  3, "d",   3,-1),
+    "Ti": (4,  4, "d",   4,-1),
+    "V":  (4,  5, "d",   5,-1),
+    "Cr": (4,  6, "d",   6,-1),
+    "Mn": (4,  7, "d",   7,-1),
+    "Fe": (4,  8, "d",   8,-1),
+    "Co": (4,  9, "d",   9,-1),
+    "Ni": (4, 10, "d",  10,-1),
+    "Cu": (4, 11, "d",  11,-1),
+    "Zn": (4, 12, "d",  12,-1),
+    "Ga": (4, 13, "s/p", 3, 0),
+    "Ge": (4, 14, "s/p", 4, 0),
+    "As": (4, 15, "s/p", 5, 1),
+    "Se": (4, 16, "s/p", 6, 2),
+    "Br": (4, 17, "s/p", 7, 3),
+    "Kr": (4, 18, "s/p", 8, 4),
+    "Rb": (5,  1, "s",   1, 0),
+    "Sr": (5,  2, "s",   2, 0),
+    "Y":  (5,  3, "d",   3,-1),
+    "Zr": (5,  4, "d",   4,-1),
+    "Nb": (5,  5, "d",   5,-1),
+    "Mo": (5,  6, "d",   6,-1),
+    "Ru": (5,  8, "d",   8,-1),
+    "Rh": (5,  9, "d",   9,-1),
+    "Pd": (5, 10, "d",  10,-1),
+    "Ag": (5, 11, "d",  11,-1),
+    "Cd": (5, 12, "d",  12,-1),
+    "In": (5, 13, "s/p", 3, 0),
+    "Sn": (5, 14, "s/p", 4, 0),
+    "Sb": (5, 15, "s/p", 5, 1),
+    "Te": (5, 16, "s/p", 6, 2),
+    "I":  (5, 17, "s/p", 7, 3),
+    "Xe": (5, 18, "s/p", 8, 4),
+    "Cs": (6,  1, "s",   1, 0),
+    "Ba": (6,  2, "s",   2, 0),
+    "La": (6,  3, "d",   3,-1),
+    "Hf": (6,  4, "d",   4,-1),
+    "Ta": (6,  5, "d",   5,-1),
+    "W":  (6,  6, "d",   6,-1),
+    "Re": (6,  7, "d",   7,-1),
+    "Os": (6,  8, "d",   8,-1),
+    "Ir": (6,  9, "d",   9,-1),
+    "Pt": (6, 10, "d",  10,-1),
+    "Au": (6, 11, "d",  11,-1),
+    "Hg": (6, 12, "d",  12,-1),
+    "Tl": (6, 13, "s/p", 3, 0),
+    "Pb": (6, 14, "s/p", 4, 0),
+    "Bi": (6, 15, "s/p", 5, 1),
+    "Po": (6, 16, "s/p", 6, 2),
+    "U":  (7,  3, "f",   3,-1),
+    "Th": (7,  4, "f",   4,-1),
+}
+
+
+def estimate_alpha(elem1: str, elem2: str) -> Optional[dict]:
+    """Predict α for ANY element pair using LP + period heuristic.
+    Returns dict with estimated alpha, confidence, and reasoning."""
+    e1 = elem1.capitalize()
+    e2 = elem2.capitalize()
+    if e1 not in ELEMENTS or e2 not in ELEMENTS:
+        return None
+
+    p1, g1, blk1, v1, lp1 = ELEMENTS[e1]
+    p2, g2, blk2, v2, lp2 = ELEMENTS[e2]
+
+    period = max(p1, p2)
+    lp_min = min(lp1, lp2) if lp1 >= 0 and lp2 >= 0 else -1
+    is_d = blk1 == "d" or blk2 == "d"
+    is_f = blk1 == "f" or blk2 == "f"
+
+    # Heuristic estimation based on validated patterns
+    if is_f:
+        alpha_est = 0.5
+        conf = "low"
+        reason = "f-block: very limited data, rough estimate"
+    elif is_d:
+        if period <= 4:
+            alpha_est = 0.65
+        elif period <= 5:
+            alpha_est = 0.72
+        else:
+            alpha_est = 0.85
+        conf = "medium"
+        reason = "d-block: δ-bonds have poor overlap → diminishing returns"
+    elif lp_min == 0:
+        # LP=0 → α < 1, scaled by period
+        alpha_map = {2: 0.82, 3: 0.48, 4: 0.41, 5: 0.33, 6: 0.28}
+        alpha_est = alpha_map.get(period, 0.35)
+        conf = "high"
+        reason = f"LP=0, Period {period}: no reserve → diminishing returns"
+    elif lp_min >= 1 and period == 2:
+        alpha_map = {1: 1.55, 2: 1.77}
+        alpha_est = alpha_map.get(lp_min, 1.6)
+        conf = "high"
+        reason = f"LP={lp_min}, Period 2: small atoms, good π-overlap → synergy"
+    elif lp_min >= 1 and period == 3:
+        alpha_est = 1.1 if lp_min == 1 else 0.7
+        conf = "medium"
+        reason = f"LP={lp_min}, Period 3: moderate overlap, mixed behavior"
+    elif lp_min >= 1 and period >= 4:
+        alpha_est = 0.65
+        conf = "medium"
+        reason = f"LP={lp_min}, Period {period}: poor p-p overlap despite LP"
+    else:
+        alpha_est = 0.7
+        conf = "low"
+        reason = "insufficient pattern data"
+
+    return {
+        "bond": f"{e1}-{e2}",
+        "alpha_est": alpha_est,
+        "confidence": conf,
+        "reason": reason,
+        "lp_min": lp_min,
+        "period": period,
+        "block": "d" if is_d else ("f" if is_f else "s/p"),
+        "source": "estimated (LP + period heuristic)",
+    }
+
+
 def get_bond_data(elem1: str, elem2: str) -> Optional[BondData]:
     e1 = elem1.capitalize()
     e2 = elem2.capitalize()

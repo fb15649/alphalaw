@@ -4,7 +4,7 @@ E(n) = E₁ × n^α — Reserve Law of Chemical Bonding.
 """
 import math
 from typing import Optional
-from .data import BondData, get_bond_data, list_all_bonds, ATOMIC_ALPHAS
+from .data import BondData, get_bond_data, list_all_bonds, ATOMIC_ALPHAS, estimate_alpha, ELEMENTS
 
 
 def get_bond(elem1: str, elem2: str) -> Optional[BondData]:
@@ -53,7 +53,33 @@ def predict(elem1: str, elem2: str) -> dict:
     """
     bond = get_bond(elem1, elem2)
     if bond is None:
-        return {"error": f"No data for {elem1}-{elem2}. Use --list to see available bonds."}
+        est = estimate_alpha(elem1, elem2)
+        if est is None:
+            return {"error": f"Unknown element: {elem1} or {elem2}"}
+        # Build estimated result
+        alpha_est = est["alpha_est"]
+        result = {
+            "bond": est["bond"],
+            "block": est["block"],
+            "alpha": alpha_est,
+            "beta": 0.0,
+            "LP_min": est["lp_min"],
+            "has_reserve": est["lp_min"] >= 1 if est["lp_min"] >= 0 else False,
+            "energies": {},
+            "source": est["source"],
+            "estimated": True,
+            "confidence": est["confidence"],
+        }
+        if alpha_est > 1.5:
+            result["prediction"] = "Strong synergy expected — multiple bonds viable"
+        elif alpha_est > 1.0:
+            result["prediction"] = "Moderate synergy — double bonds may be favored"
+        elif alpha_est > 0.7:
+            result["prediction"] = "Mild diminishing returns — single bonds slightly favored"
+        else:
+            result["prediction"] = "Strong diminishing returns — prefers single bonds / frameworks"
+        result["note"] = est["reason"]
+        return result
 
     alpha = bond.alpha
     result = {

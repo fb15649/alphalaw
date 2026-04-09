@@ -16,8 +16,10 @@ def format_prediction(result: dict) -> str:
     alpha = result.get("alpha")
     block = result["block"]
 
-    lines.append(f"  {bond}")
-    lines.append(f"  {'=' * len(bond)}")
+    is_estimated = result.get("estimated", False)
+    tag = " [ESTIMATED]" if is_estimated else ""
+    lines.append(f"  {bond}{tag}")
+    lines.append(f"  {'=' * len(bond + tag)}")
 
     if alpha is not None:
         lines.append(f"  α = {alpha:.3f}  ({'synergy' if alpha > 1 else 'diminishing returns'})")
@@ -54,6 +56,9 @@ def format_prediction(result: dict) -> str:
         lines.append(f"  Morse predicted α = {result['morse_predicted_alpha']:.3f} "
                       f"(x_e = {result['x_e']:.5f})")
 
+    if is_estimated:
+        conf = result.get("confidence", "?")
+        lines.append(f"  Confidence: {conf}")
     lines.append(f"  Source: {result.get('source', '?')}")
     return "\n".join(lines)
 
