@@ -117,8 +117,11 @@ def predict(elem1: str, elem2: str) -> dict:
 
         if bond.LP_min == 0:
             result["note"] = "LP=0: no recruitable reserve → α < 1 expected"
+        elif bond.LP_min >= 1 and bond.period == 2:
+            result["note"] = f"LP={bond.LP_min}, Period 2: good π-overlap → α > 1 (synergy)"
         elif bond.LP_min >= 1:
-            result["note"] = f"LP={bond.LP_min}: has reserve → α > 1 expected"
+            result["note"] = (f"LP={bond.LP_min}, Period {bond.period}: LP exists but "
+                              "poor π-overlap in heavy atoms → α < 1 likely")
 
     if bond.x_e is not None:
         result["x_e"] = bond.x_e
