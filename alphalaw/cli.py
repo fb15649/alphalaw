@@ -21,6 +21,12 @@ def format_prediction(result: dict) -> str:
 
     if alpha is not None:
         lines.append(f"  α = {alpha:.3f}  ({'synergy' if alpha > 1 else 'diminishing returns'})")
+        beta = result.get("beta", 0)
+        if abs(beta) > 0.01:
+            if beta > 0:
+                lines.append(f"  β = {beta:+.3f}  (synergy accelerates with bond order)")
+            else:
+                lines.append(f"  β = {beta:+.3f}  (diminishing returns accelerate)")
     else:
         lines.append("  α = N/A (insufficient data)")
 

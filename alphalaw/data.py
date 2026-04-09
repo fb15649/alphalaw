@@ -26,7 +26,8 @@ class BondData:
 
     @property
     def alpha(self) -> Optional[float]:
-        """Compute α from E(n) = E₁ × n^α using OLS forced through origin."""
+        """Simple α: OLS forced through origin. Used for CLASSIFICATION.
+        E(n) = E₁ × n^α. α>1 = synergy, α<1 = diminishing returns."""
         orders = sorted(self.energies.keys())
         if len(orders) < 2:
             return None
@@ -35,17 +36,47 @@ class BondData:
             return None
         if len(orders) == 2:
             n1, n2 = orders
-            E_n1, E_n2 = self.energies[n1], self.energies[n2]
-            if E_n1 <= 0 or E_n2 <= 0:
+            if self.energies[n1] <= 0 or self.energies[n2] <= 0:
                 return None
-            return math.log(E_n2 / E_n1) / math.log(n2 / n1)
-        # 3+ points: OLS forced through origin (no intercept)
-        # log(E_n/E₁) = α × log(n) → α = Σ(x·y) / Σ(x²)
+            return math.log(self.energies[n2] / self.energies[n1]) / math.log(n2 / n1)
         x = [math.log(n / orders[0]) for n in orders[1:]]
         y = [math.log(self.energies[n] / E1) for n in orders[1:]]
-        sum_xy = sum(xi * yi for xi, yi in zip(x, y))
-        sum_xx = sum(xi * xi for xi in x)
-        return sum_xy / sum_xx if sum_xx > 0 else None
+        return sum(xi * yi for xi, yi in zip(x, y)) / sum(xi * xi for xi in x)
+
+    @property
+    def alpha_beta(self) -> tuple[Optional[float], float]:
+        """(α, β) for 2-param model: E = E₁ × n^(α + β·ln(n)).
+        Used for PREDICTION. More accurate than simple α."""
+        orders = sorted(self.energies.keys())
+        if len(orders) < 2:
+            return None, 0.0
+        E1 = self.energies[orders[0]]
+        if E1 <= 0:
+            return None, 0.0
+        if len(orders) <= 2:
+            return self.alpha, 0.0
+        import numpy as np
+        x1 = np.array([math.log(n / orders[0]) for n in orders[1:]])
+        x2 = x1 ** 2
+        y = np.array([math.log(self.energies[n] / E1) for n in orders[1:]])
+        X = np.column_stack([x1, x2])
+        coeffs = np.linalg.lstsq(X, y, rcond=None)[0]
+        return float(coeffs[0]), float(coeffs[1])
+
+    @property
+    def beta(self) -> float:
+        """β curvature: >0 = accelerating synergy, <0 = decelerating."""
+        return self.alpha_beta[1]
+
+    def predict_energy(self, n: float) -> Optional[float]:
+        """Predict E(n) using 2-parameter model (high accuracy)."""
+        a, b = self.alpha_beta
+        if a is None:
+            return None
+        orders = sorted(self.energies.keys())
+        E1 = self.energies[orders[0]]
+        ln_n = math.log(n / orders[0]) if n > orders[0] else 0
+        return E1 * math.exp(a * ln_n + b * ln_n ** 2)
 
     @property
     def LP_min(self) -> int:

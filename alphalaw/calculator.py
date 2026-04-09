@@ -60,6 +60,7 @@ def predict(elem1: str, elem2: str) -> dict:
         "bond": bond.bond,
         "block": bond.block,
         "alpha": alpha,
+        "beta": bond.beta,
         "LP_min": bond.LP_min,
         "has_reserve": bond.has_reserve,
         "energies": bond.energies,

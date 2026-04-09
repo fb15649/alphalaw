@@ -77,44 +77,46 @@ T = {
 # ── Data ────────────────────────────────────────────────────────────────
 
 BONDS = {
-    ("C", "C"):   (0.812, 0, "s/p", {1:346, 2:614, 3:839}, "CRC Handbook"),
-    ("Si", "Si"): (0.485, 0, "s/p", {1:310, 2:434}, "CRC"),
-    ("Ge", "Ge"): (0.407, 0, "s/p", {1:264, 2:350}, "CRC"),
-    ("Sn", "Sn"): (0.330, 0, "s/p", {1:187, 2:235}, "CRC"),
-    ("N", "N"):   (1.551, 1, "s/p", {1:160, 2:418, 3:945}, "CRC"),
-    ("P", "P"):   (1.283, 1, "s/p", {1:201, 2:489}, "CRC"),
-    ("O", "O"):   (1.770, 2, "s/p", {1:146, 2:498}, "CRC"),
-    ("S", "S"):   (0.676, 2, "s/p", {1:266, 2:425}, "CRC"),
-    ("C", "N"):   (0.986, 0, "s/p", {1:305, 2:615, 3:891}, "CRC"),
-    ("C", "O"):   (1.018, 0, "s/p", {1:358, 2:745, 3:1077}, "CRC"),
-    ("N", "O"):   (1.595, 1, "s/p", {1:201, 2:607}, "CRC"),
-    ("B", "N"):   (0.707, 0, "s/p", {1:389, 2:635}, "CRC"),
-    ("B", "O"):   (0.589, 0, "s/p", {1:536, 2:806}, "CRC"),
-    ("Si", "O"):  (0.502, 0, "s/p", {1:452, 2:640}, "CRC"),
-    ("Si", "N"):  (0.405, 0, "s/p", {1:355, 2:470}, "CRC"),
-    ("Al", "O"):  (0.560, 0, "s/p", {1:502, 2:740}, "CRC"),
-    ("C", "S"):   (1.075, 0, "s/p", {1:272, 2:573}, "CRC"),
-    ("C", "P"):   (0.958, 0, "s/p", {1:264, 2:513}, "CRC"),
-    ("Ge", "O"):  (0.520, 0, "s/p", {1:401, 2:575}, "CRC"),
-    ("As", "As"): (1.388, 1, "s/p", {1:146, 2:382}, "CRC"),
-    ("Se", "Se"): (0.661, 2, "s/p", {1:172, 2:272}, "CRC"),
-    ("Te", "Te"): (0.686, 2, "s/p", {1:138, 2:222}, "CRC"),
-    ("B", "C"):   (0.665, 0, "s/p", {1:372, 2:590}, "CRC"),
-    ("N", "S"):   (1.554, 1, "s/p", {1:159, 2:467}, "CRC"),
-    ("P", "O"):   (0.699, 1, "s/p", {1:335, 2:544}, "CRC"),
-    ("S", "O"):   (0.978, 2, "s/p", {1:265, 2:522}, "CRC"),
-    ("P", "S"):   (0.543, 1, "s/p", {1:230, 2:335}, "CRC"),
-    ("F", "F"):   (None, 3, "s/p", {1:158}, "CRC"),
-    ("Cl", "Cl"): (None, 3, "s/p", {1:242}, "CRC"),
-    ("Br", "Br"): (None, 3, "s/p", {1:193}, "CRC"),
-    ("I", "I"):   (None, 3, "s/p", {1:151}, "CRC"),
-    ("Ti", "O"):  (None, -1, "d", {1:672}, "CRC"),
-    ("Fe", "C"):  (None, -1, "d", {1:394}, "CRC; Brugh & Morse"),
-    ("W", "C"):   (None, -1, "d", {1:639}, "CRC"),
-    ("Cr", "Cr"): (0.559, -1, "d", {1:70, 4:152}, "Cotton; CRC"),
-    ("Mo", "Mo"): (0.710, -1, "d", {1:140, 2:250, 3:350, 4:405, 5:420, 6:435}, "Cotton & Murillo 2005"),
-    ("W", "W"):   (0.878, -1, "d", {1:160, 3:500, 4:570, 6:666}, "CRC; Cotton"),
-    ("Re", "Re"): (0.868, -1, "d", {1:120, 4:432}, "Bergman 1984; CRC"),
+    # Format: (α, β, LP_min, block, energies, source)
+    # Model: E = E₁ × n^(α + β·ln(n));  β=0 for 2-point bonds
+    ("C", "C"):   (0.864, -0.052, 0, "s/p", {1:346, 2:614, 3:839}, "CRC Handbook"),
+    ("Si", "Si"): (0.485, 0, 0, "s/p", {1:310, 2:434}, "CRC"),
+    ("Ge", "Ge"): (0.407, 0, 0, "s/p", {1:264, 2:350}, "CRC"),
+    ("Sn", "Sn"): (0.330, 0, 0, "s/p", {1:187, 2:235}, "CRC"),
+    ("N", "N"):   (0.990, 0.570, 1, "s/p", {1:160, 2:418, 3:945}, "CRC"),
+    ("P", "P"):   (1.283, 0, 1, "s/p", {1:201, 2:489}, "CRC"),
+    ("O", "O"):   (1.770, 0, 2, "s/p", {1:146, 2:498}, "CRC"),
+    ("S", "S"):   (0.676, 0, 2, "s/p", {1:266, 2:425}, "CRC"),
+    ("C", "N"):   (1.073, -0.089, 0, "s/p", {1:305, 2:615, 3:891}, "CRC"),
+    ("C", "O"):   (1.151, -0.135, 0, "s/p", {1:358, 2:745, 3:1077}, "CRC"),
+    ("N", "O"):   (1.595, 0, 1, "s/p", {1:201, 2:607}, "CRC"),
+    ("B", "N"):   (0.707, 0, 0, "s/p", {1:389, 2:635}, "CRC"),
+    ("B", "O"):   (0.589, 0, 0, "s/p", {1:536, 2:806}, "CRC"),
+    ("Si", "O"):  (0.502, 0, 0, "s/p", {1:452, 2:640}, "CRC"),
+    ("Si", "N"):  (0.405, 0, 0, "s/p", {1:355, 2:470}, "CRC"),
+    ("Al", "O"):  (0.560, 0, 0, "s/p", {1:502, 2:740}, "CRC"),
+    ("C", "S"):   (1.075, 0, 0, "s/p", {1:272, 2:573}, "CRC"),
+    ("C", "P"):   (0.958, 0, 0, "s/p", {1:264, 2:513}, "CRC"),
+    ("Ge", "O"):  (0.520, 0, 0, "s/p", {1:401, 2:575}, "CRC"),
+    ("As", "As"): (1.388, 0, 1, "s/p", {1:146, 2:382}, "CRC"),
+    ("Se", "Se"): (0.661, 0, 2, "s/p", {1:172, 2:272}, "CRC"),
+    ("Te", "Te"): (0.686, 0, 2, "s/p", {1:138, 2:222}, "CRC"),
+    ("B", "C"):   (0.665, 0, 0, "s/p", {1:372, 2:590}, "CRC"),
+    ("N", "S"):   (1.554, 0, 1, "s/p", {1:159, 2:467}, "CRC"),
+    ("P", "O"):   (0.699, 0, 1, "s/p", {1:335, 2:544}, "CRC"),
+    ("S", "O"):   (0.978, 0, 2, "s/p", {1:265, 2:522}, "CRC"),
+    ("P", "S"):   (0.543, 0, 1, "s/p", {1:230, 2:335}, "CRC"),
+    ("F", "F"):   (None, 0, 3, "s/p", {1:158}, "CRC"),
+    ("Cl", "Cl"): (None, 0, 3, "s/p", {1:242}, "CRC"),
+    ("Br", "Br"): (None, 0, 3, "s/p", {1:193}, "CRC"),
+    ("I", "I"):   (None, 0, 3, "s/p", {1:151}, "CRC"),
+    ("Ti", "O"):  (None, 0, -1, "d", {1:672}, "CRC"),
+    ("Fe", "C"):  (None, 0, -1, "d", {1:394}, "CRC; Brugh & Morse"),
+    ("W", "C"):   (None, 0, -1, "d", {1:639}, "CRC"),
+    ("Cr", "Cr"): (0.559, 0, -1, "d", {1:70, 4:152}, "Cotton; CRC"),
+    ("Mo", "Mo"): (1.076, -0.242, -1, "d", {1:140, 2:250, 3:350, 4:405, 5:420, 6:435}, "Cotton & Murillo 2005"),
+    ("W", "W"):   (1.394, -0.336, -1, "d", {1:160, 3:500, 4:570, 6:666}, "CRC; Cotton"),
+    ("Re", "Re"): (0.924, 0, -1, "d", {1:120, 4:432}, "Bergman 1984; CRC"),
 }
 
 def lookup(e1, e2):
@@ -151,7 +153,7 @@ with col1:
     if data is None:
         st.error(f"{t('no_data')} {elem1}-{elem2}")
     else:
-        alpha, lp_min, block, energies, source = data
+        alpha, beta, lp_min, block, energies, source = data
 
         if alpha > 1:
             color = "🟢"
@@ -160,7 +162,8 @@ with col1:
             color = "🔴"
             regime = t("diminishing")
 
-        st.markdown(f"### {color} {elem1}-{elem2}: α = {alpha:.3f}\n**{t('regime')}**: {regime}")
+        beta_str = f", β = {beta:+.3f}" if abs(beta) > 0.01 else ""
+        st.markdown(f"### {color} {elem1}-{elem2}: α = {alpha:.3f}{beta_str}\n**{t('regime')}**: {regime}")
 
         if block == "s/p":
             if lp_min == 0:
@@ -174,7 +177,7 @@ with col1:
 
 with col2:
     if data is not None:
-        alpha, lp_min, block, energies, source = data
+        alpha, beta, lp_min, block, energies, source = data
         orders = sorted(energies.keys())
         E1 = energies[orders[0]]
 
@@ -184,8 +187,10 @@ with col2:
         import pandas as pd
         import altair as alt
 
+        import math as _math
         n_range = np.linspace(orders[0], max(orders[-1], 3), 50)
-        E_pred = [E1 * (n / orders[0]) ** alpha for n in n_range]
+        E_pred = [E1 * _math.exp(alpha * _math.log(n/orders[0]) + beta * _math.log(n/orders[0])**2)
+                  for n in n_range]
 
         actual_n = list(energies.keys())
         actual_E = list(energies.values())
@@ -212,7 +217,8 @@ with col2:
         rows = []
         for n in orders:
             E_act = energies[n]
-            E_p = E1 * (n / orders[0]) ** alpha
+            ln_n = _math.log(n / orders[0]) if n > orders[0] else 0
+            E_p = E1 * _math.exp(alpha * ln_n + beta * ln_n**2)
             rows.append({t("bond_order"): n, t("e_actual"): E_act,
                           t("e_predicted"): round(E_p, 1),
                           t("error_pct"): round(100 * (E_p - E_act) / E_act, 1)})
@@ -224,12 +230,18 @@ st.markdown("---")
 with st.expander(t("full_table")):
     import pandas as pd
     rows = []
-    for (e1, e2), (a, lp, blk, ens, src) in sorted(BONDS.items()):
+    for (e1, e2), (a, b, lp, blk, ens, src) in sorted(BONDS.items()):
         reserve = t("yes") if (blk == "s/p" and lp >= 1) else t("no")
         lp_str = str(lp) if lp >= 0 else "d"
-        regime = t("synergy").lower() if a > 1 else t("diminishing").lower()
-        rows.append({t("bond"): f"{e1}-{e2}", t("block"): blk, "α": round(a, 3),
-                      "LP": lp_str, t("reserve"): reserve, t("regime"): regime})
+        if a is not None:
+            regime = t("synergy").lower() if a > 1 else t("diminishing").lower()
+            a_str = round(a, 3)
+        else:
+            regime = "—"
+            a_str = "—"
+        b_str = f"{b:+.3f}" if abs(b) > 0.01 else ""
+        rows.append({t("bond"): f"{e1}-{e2}", t("block"): blk, "α": a_str,
+                      "β": b_str, "LP": lp_str, t("reserve"): reserve, t("regime"): regime})
     st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
     st.markdown(t("stats"))
 
