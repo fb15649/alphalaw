@@ -294,11 +294,20 @@ def estimate_alpha(elem1: str, elem2: str) -> Optional[dict]:
     elif lp_min >= 1 and period == 3:
         alpha_est = 1.1 if lp_min == 1 else 0.7
         conf = "medium"
-        reason = f"LP={lp_min}, Period 3: moderate overlap, mixed behavior"
-    elif lp_min >= 1 and period >= 4:
+        reason = f"LP={lp_min}, Period 3: moderate π-overlap"
+    elif lp_min == 1 and period in (4, 5):
+        # Group 15 (As, Sb): retain decent π, like P-P (1.28)
+        alpha_est = 1.0 if period == 5 else 0.9
+        conf = "medium"
+        reason = f"LP=1, Period {period}: Group 15 retains some π-overlap"
+    elif lp_min >= 2 and period >= 4:
         alpha_est = 0.65
         conf = "medium"
-        reason = f"LP={lp_min}, Period {period}: poor p-p overlap despite LP"
+        reason = f"LP={lp_min}, Period {period}: poor overlap despite LP"
+    elif lp_min >= 1 and period >= 6:
+        alpha_est = 0.65
+        conf = "medium"
+        reason = f"LP={lp_min}, Period {period}: very poor overlap"
     else:
         alpha_est = 0.7
         conf = "low"
