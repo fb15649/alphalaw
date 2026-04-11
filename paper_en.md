@@ -16,11 +16,30 @@ where 6 = 3! (permutations of three proton sub-vortices), π⁵ = phase space vo
 
 ## 1. Introduction
 
-The Standard Model of particle physics contains ~25 free parameters: quark and lepton masses, mixing angles, coupling constants. None can be computed from theory — all are determined experimentally. The question "why is the proton exactly 1836.15267 times heavier than the electron" has no answer within the Standard Model.
+### 1.1 The forgotten physics
 
-In this work we return to Kelvin's idea (1867): atoms are vortices in a medium. Helmholtz (1858) proved that in an ideal (inviscid, incompressible) fluid, vortex rings are eternal — they cannot be created or destroyed. Kelvin proposed that if space is filled with such a fluid, stable particles could be vortices in it.
+In 1858, Helmholtz proved a theorem: in an ideal fluid, vortices are eternal — they cannot be created or destroyed. In 1867, Kelvin proposed that if space is filled with such a fluid, stable particles are vortices in it. In 1865, Maxwell showed that ε₀ and μ₀ are properties of the medium, deriving c = 1/√(ε₀μ₀). In 1907, Tesla wrote: "the primary substance, thrown into infinitesimal whirls of prodigious velocity, becomes gross matter."
 
-Kelvin's model was abandoned after the Michelson-Morley experiment (1887) and the development of quantum mechanics. However, we show that with modern data it can be reformulated consistently.
+They all said the same thing: **matter = vortices in a medium.**
+
+In 1905, Einstein removed the ether — not because he proved its absence, but because he didn't need it for special relativity. The mathematics worked without a medium. Physicists followed. But Einstein himself, in his 1920 Leiden lecture, said: "according to the general theory of relativity, space without ether is unthinkable."
+
+Dirac (1951) proposed bringing the ether back. Volovik (2003) showed that a superfluid vacuum reproduces all relativistic physics. They were not heard.
+
+### 1.2 The problem
+
+The Standard Model of particle physics contains ~25 free parameters: quark and lepton masses, mixing angles, coupling constants. None can be computed from theory — all are determined experimentally. The question "why is the proton exactly 1836.15267 times heavier than the electron" has no answer.
+
+### 1.3 Our approach
+
+In this work we return to Kelvin's model and plug in numbers. We show that:
+
+- The medium's density ρ = μ₀ (computed via three independent paths)
+- The proton-to-electron mass ratio = 6π⁵ × (1 + 10α²/(9π)) to 8 significant digits
+- All 8 measured dimensionless numbers in the EM sector are expressible through π
+- 37 chemical bonds are classified with 100% accuracy
+
+We do not discover new physics. We **confirm with numbers the physics that was discarded 120 years ago**. Kelvin and Tesla lacked a computer to verify. We do not.
 
 ---
 
