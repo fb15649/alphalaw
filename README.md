@@ -73,6 +73,10 @@ scripts/alpha_correction.py        # correction for 1/α
 scripts/four_real_particles.py     # e, p, n, photon in the model
 ```
 
+## Contact
+
+Questions, ideas, collaboration — [open an Issue](https://github.com/fb15649/alphalaw/issues).
+
 ## License
 
 MIT
