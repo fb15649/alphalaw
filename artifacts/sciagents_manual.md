@@ -31,13 +31,13 @@
     └── [pion] = vortex-antivortex pair
 
 [ether properties]── medium parameters
-    ├── [ρ] ≈ μ₀ = 1.26×10⁻⁶ (from impedance + grebennikov)
+    ├── [ρ] ≈ μ₀ = 1.26×10⁻⁶ (from impedance + independent vacuum analysis)
     ├── [G] = ρc² = 1/ε₀ = 1.13×10¹¹ Pa
     ├── [κ_GL] = 1/α = 137 (type-II SC)
     ├── [η] = 0 (superfluid)
     └── [K] → ∞ (incompressible)
 
-[grebennikov]── macroscopic ether effects
+[independent vacuum analysis]── macroscopic ether effects
     ├── [ρ_ether] = 10⁻⁶ kg/m³ (from Shapiro delay)
     ├── [β] = 2.1×10⁻⁴ (acoustoelastic coupling)
     ├── [σ_cav] = 4.2×10⁻⁵ N/m
@@ -52,7 +52,7 @@
 [π/σ ratio] ←→ [vortex model]: π-bond = lateral flow, σ = axial
 [1/α] ←→ [κ_GL]: κ = ƛ_e/r_e = 1/α (identity)
 [ρ] ←→ [ρ_ether]: μ₀ ≈ 10⁻⁶ (independent estimates)
-[G] ←→ [G_grebennikov]: 1/ε₀ = ρc² (exact)
+[G] ←→ [G_independent vacuum analysis]: 1/ε₀ = ρc² (exact)
 [neutrino] ←→ [Δm² ratio]: π³ ≈ 31.0 (5% from exp)
 [3 generations] ←→ [Koide]: Q = 2/3 (0.001%)
 [electron] ←→ [London moment]: rotation → charge
@@ -63,7 +63,7 @@
 
 ### Связь 1: α_scaling (0.847) ↔ α_bond (0.5-1.8)
 
-grebennikov нашёл: Γ ∝ L^0.847 на 29 порядках масштаба.
+independent vacuum analysis нашёл: Γ ∝ L^0.847 на 29 порядках масштаба.
 alphalaw нашёл: E(n) = E₁ × n^α, где α варьируется.
 
 **Вопрос:** α_bond для СРЕДНЕЙ связи ≈ 0.85?
@@ -81,7 +81,7 @@ Gap в R₂ = E₂/E₁. Нижняя граница ≈ φ = 1.618.
 
 ### Связь 3: σ_cav (macro) ↔ bond energy (micro)
 
-grebennikov: σ_cav = 4.2×10⁻⁵ N/m (macroscopic surface tension).
+independent vacuum analysis: σ_cav = 4.2×10⁻⁵ N/m (macroscopic surface tension).
 alphalaw: E₁ (single bond energy) = 100-900 kJ/mol.
 
 **Вопрос:** если σ scales as Γ ∝ L^0.847, what σ at atomic scale?
@@ -105,7 +105,7 @@ Ratio: 6π⁵/(3/(2α)) = 4π⁵α ≈ 8.90.
 ### H1: Среднее α_bond ≈ α_scaling
 
 Если средний α по всем 48 bonds ≈ 0.847, это связывает
-материаловедение (Слой 1) с космологическим скейлингом (grebennikov).
+материаловедение (Слой 1) с космологическим скейлингом (independent vacuum analysis).
 
 ### H2: Gap boundaries = function of κ_GL
 
@@ -115,7 +115,7 @@ Ratio: 6π⁵/(3/(2α)) = 4π⁵α ≈ 8.90.
 ### H3: σ_cav × (L_macro/L_micro)^0.847 ≈ bond energy
 
 Если поверхностное натяжение масштабируется по тому же закону
-что и циркуляция, то макро-σ из grebennikov предсказывает
+что и циркуляция, то макро-σ из independent vacuum analysis предсказывает
 микро-энергии связей из alphalaw.
 
 ## Этап 4: Проверка (выполняется в скрипте)

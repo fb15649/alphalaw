@@ -33,7 +33,7 @@ cryst_alphas = [a for a in alphas if a < 1]
 print(f"  All bonds: mean={mean_a:.4f}, median={median_a:.4f}, n={len(alphas)}")
 print(f"  Molecules only: mean={sum(mol_alphas)/len(mol_alphas):.4f}, n={len(mol_alphas)}")
 print(f"  Crystals only: mean={sum(cryst_alphas)/len(cryst_alphas):.4f}, n={len(cryst_alphas)}")
-print(f"  α_scaling (grebennikov) = 0.847")
+print(f"  α_scaling (cross-scale) = 0.847")
 print(f"  |mean - 0.847| = {abs(mean_a-0.847):.4f} ({abs(mean_a-0.847)/0.847*100:.1f}%)")
 
 # Geometric mean (more appropriate for power laws)

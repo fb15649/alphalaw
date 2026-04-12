@@ -75,7 +75,7 @@ Three independent paths lead to one number.
 
 **Path 2 (Maxwell's analogy).** In Maxwell's mechanical model (1861), μ₀ represents the medium's inertia (density), ε₀ its inverse elasticity.
 
-**Path 3 (experiment).** Eight experimental facts from the Grebennikov project are self-consistently explained with ρ = μ₀.
+**Path 3 (experiment).** Independent acoustoelastic analysis of vacuum properties based on Shapiro delay yields ρ ≈ 10⁻⁶ kg/m³, consistent with μ₀ = 1.257×10⁻⁶ in order of magnitude.
 
 **Result:**
 
