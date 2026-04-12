@@ -6,11 +6,19 @@
 
 ## Abstract
 
-We propose a model in which elementary particles are stable toroidal vortices in a superfluid medium (ether) with density ρ = μ₀ = 1.257×10⁻⁶ kg/m³. The proton-to-electron mass ratio is expressed through the number π and the fine structure constant α:
+*Version 2.0 — updated 2026-04-12*
+
+We propose a model in which elementary particles are stable toroidal vortices in a superfluid medium (ether) with density ρ = μ₀. We show that 8 electromagnetic constants of the Standard Model can be expressed through a single free parameter (m_e) and the number π — a compression ratio of 8:1.
 
 **m_p/m_e = 6π⁵ × (1 + 10α²/(9π)) = 1836.15269** (exp: 1836.15267, error 0.01 ppm)
 
-where 6 = 3! (permutations of three proton sub-vortices), π⁵ = phase space volume of five degrees of freedom on a torus. Similar formulas with 0.001–0.23 ppm accuracy are found for 1/α, the proton magnetic moment, and the neutron-proton mass difference. All four formulas share a unified structure: polynomial in π with a multiplicative α² correction. The model also consistently describes chemical bonds (37 bonds, 100% molecule/crystal classification via the π/σ ratio of axial and lateral vortex flows).
+Similar formulas are found for 1/α (0.001 ppm), μ_p (0.23 ppm), Δm (0.1 ppm), m_d/m_p, μ_d, R_p, and g−2. The model describes:
+- **48 chemical bonds** with 100% molecule/crystal classification (validated on 76,000 JARVIS-DFT materials)
+- **Neutrinos** as phonons (longitudinal waves) of ether: m_νᵢ = m_eα³/π^((3i-1)/2), Σm = 77 meV
+- **3 lepton generations** via 3 torus modes: Koide formula Q = 2/3 (0.001%), independently confirmed from Clifford torus geometry (2026)
+- **Muon** as excited electron: m_μ/m_e ≈ 3/(2α) (0.6%)
+
+Probability of all coincidences being random: < 1:30,000,000.
 
 ---
 
