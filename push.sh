@@ -48,7 +48,7 @@ HTTPS_PROXY="" HTTP_PROXY="" git push "$GITHUB_REMOTE" "$TEMP_BRANCH:$BRANCH" --
 echo "  Done."
 
 # Go back to main and delete temp branch
-git checkout "$BRANCH"
+git checkout "$BRANCH" -f
 git branch -D "$TEMP_BRANCH"
 
 echo ""
