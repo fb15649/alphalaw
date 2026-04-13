@@ -85,11 +85,21 @@ def get_sigma_pi(e1, e2):
     den = abs(en1 - en2)
     sigma_est = 6 * en1 * en2 / period + 109 * den**2 + 205
 
-    # π estimate: depends on LP and Period
-    # LP > 0 AND Period = 2 → strong π
-    # LP > 0 AND Period ≥ 3 → weak π
-    # LP = 0 → very weak π (σ-only bond)
-    if lp_min >= 2 and period == 2:
+    # π estimate: depends on LP, Period, AND ionicity
+    # KEY: ionic CRYSTAL = metal + nonmetal with large ΔEN
+    # But ionic MOLECULE (HF, BF₃) = nonmetal + nonmetal → still molecular
+    has_metal = (blk1 == 'd' or blk2 == 'd' or
+                 blk1 == 'f' or blk2 == 'f' or
+                 ELEMENTS.get(e1, (0,0,'p',0,0))[1] in (1,2) or  # group 1,2
+                 ELEMENTS.get(e2, (0,0,'p',0,0))[1] in (1,2))
+    is_ionic_crystal = has_metal and den > 1.0
+
+    if is_ionic_crystal and den > 1.5:
+        pi_est = sigma_est * 0.05  # strong ionic: no π
+    elif is_ionic_crystal:
+        pi_factor = 0.3 * (1.5 - den) / 0.5
+        pi_est = sigma_est * max(0.05, pi_factor)
+    elif lp_min >= 2 and period == 2:
         pi_est = sigma_est * 1.5  # strong π (O-O like)
     elif lp_min >= 1 and period == 2:
         pi_est = sigma_est * 1.0  # moderate π (N-N like)
@@ -97,10 +107,10 @@ def get_sigma_pi(e1, e2):
         pi_est = sigma_est * 0.4  # weak π
     elif lp_min >= 1:
         pi_est = sigma_est * 0.3  # very weak π (heavy)
-    elif is_d:
-        pi_est = sigma_est * 0.5  # d-block: δ-bonds
+    elif is_d and den < 0.5:
+        pi_est = sigma_est * 0.5  # d-d homonuclear: δ-bonds
     else:
-        pi_est = sigma_est * 0.3  # LP=0: minimal π
+        pi_est = sigma_est * 0.2  # LP=0, covalent: minimal π
 
     R2_est = (sigma_est + pi_est) / sigma_est if sigma_est > 0 else 1
 
@@ -136,11 +146,25 @@ def classify_v6(formula):
     if len(elements) < 1:
         return "crystal", "no_data", 1.0
 
+    METALS_SET = {
+        "Li","Na","K","Rb","Cs","Be","Mg","Ca","Sr","Ba",
+        "Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn",
+        "Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd",
+        "La","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg",
+        "Al","Ga","In","Tl","Sn","Pb","Bi",
+    }
+
     # Single element
     if len(elements) == 1:
         e = elements[0]
+        if e in METALS_SET:
+            return "crystal", "pure_metal", 1.0
         pair_data = get_sigma_pi(e, e)
         R2 = pair_data[2]
+        # Heavy nonmetals with α>1 → border (molecular crystals like P4, I2)
+        p = ELEMENTS.get(e, (3,))[0] if e in ELEMENTS else 3
+        if R2 > 1.35 and p >= 3:
+            return "border", f"homo(R₂={R2:.3f},P{p})", R2
         cat = r2_to_category(R2)
         return cat, f"homo(R₂={R2:.3f})", R2
 
