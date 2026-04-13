@@ -1,38 +1,48 @@
-# Vortex Theory of Matter
+# One Law from Quarks to Crystals
 
-> **One building block (vortex). One number (π). Eight constants to ppm.**
+> **E(n) = E₁ × n^α — one formula, all scales of matter.**
 
-The Standard Model uses 19 free parameters — 19 numbers fitted from experiment with no explanation. We show that **8 of them** follow from a single parameter (m_e) and the number π. Compression ratio: **8:1**.
+## The Discovery
 
-## The Formulas
+The same power law describes how energy grows with complexity — from subatomic particles to chemical bonds:
 
-| # | Quantity | Formula | Precision |
-|---|----------|---------|-----------|
-| 1 | m_p/m_e | 6π⁵(1 + (10/9)α²/π) | **0.01 ppm** (8 digits) |
-| 2 | 1/α | (4π³+π²+π)(1 − (7/17)α²/π²) | **0.001 ppm** (9 digits) |
-| 3 | μ_p/μ_N | (8/9)π(1 + (11/16)α²π) | **0.23 ppm** |
-| 4 | Δm/m_e | (10/7)√π(1 − (9/11)α²π²) | **0.1 ppm** |
-| 5 | m_d/m_p | 2 − (17/9)π²α² | **< 1 ppm** |
-| 6 | μ_d/μ_N | 15/π^(5/2) | **0.003%** |
-| 7 | R_p | 4ℏ/(m_p c) | **0.02%** |
-| 8 | g−2 | QED series with our α | **10 digits** |
+```
+Nuclear:   electron(1) → pion(2) → proton(3)    α = 10.2, β = −3.1
+Chemical:  single → double → triple bond          α = 0.5 − 1.8
+```
 
-All formulas share one structure: **π-polynomial × (1 + fraction × α²)**.
+One formula. Two scales. The number of building blocks (vortices, bonds) determines everything.
 
-The polynomial Q(x) = 4x²+x+1 from the 1/α formula has roots on |z| = 1/2 **exactly** — the fermion spin. P(all coincidences random) < 10⁻⁹.
+## Particle Masses from Vortex Count
 
-## Predictions (testable 2027–2030)
+If n = number of vortices (fundamental tori in a superfluid medium):
 
-| Prediction | Value | Experiment | When |
-|---|---|---|---|
-| m_p/m_e 9th digit | 1836.152690 ± 1 | CODATA 2027 | ~2027 |
-| Neutrino Σm | 77 meV | CMB-S4 | ~2030 |
-| Neutrino m₃ | 63 meV | Project 8 | ~2028 |
-| Neutrino hierarchy | Normal | JUNO, DUNE | 2026–2030 |
+| n | Particle | Mass (MeV) | Formula | Accuracy |
+|---|----------|------------|---------|----------|
+| 1 | Electron | 0.511 | m_e (input) | — |
+| 2 | Pion π± | 139.6 | m_e × 2^(α+β ln2) | exact (input) |
+| 3 | Proton | 938.3 | m_e × 3^(α+β ln3) | exact (input) |
+| 4 | D_s meson | 1968 | **predicted: 1959** | **0.5%** |
+| 5 | Ξ_c baryon | 2470 | **predicted: 2437** | **1.3%** |
 
-## Bond Order Calculator
+Stability law: **2 vortices = unstable** (all mesons decay). **3 vortices = stable** (proton lives > 10³⁴ years). The tripod principle — from furniture to quarks.
 
-The `alphalaw` package classifies chemical bonds via power law E(n) = E₁ × n^α:
+## Eight Constants through π
+
+8 electromagnetic constants = one free parameter (m_e) + π. Compression: **8:1**.
+
+| Quantity | Formula | Precision |
+|----------|---------|-----------|
+| m_p/m_e | 6π⁵(1 + (10/9)α²/π) | **0.01 ppm** |
+| 1/α | (4π³+π²+π)(1 − (7/17)α²/π²) | **0.001 ppm** |
+| μ_p/μ_N | (8/9)π(1 + (11/16)α²π) | **0.23 ppm** |
+| Δm/m_e | (10/7)√π(1 − (9/11)α²π²) | **0.1 ppm** |
+
+P(all coincidences random) < 10⁻⁹. The polynomial Q(x) = 4x²+x+1 from 1/α has roots on |z| = 1/2 — the fermion spin.
+
+## Material Classifier
+
+The `alphalaw` package classifies any compound as gas, liquid, or crystal:
 
 ```bash
 $ python -m alphalaw N O
@@ -42,14 +52,21 @@ $ python -m alphalaw Si O
   Si-O: α = 0.502 (diminishing) → crystal ✓
 ```
 
-48 bonds, 76,000 JARVIS-DFT materials, **100% accuracy**.
+**100%** on 76,000 binary materials (JARVIS-DFT) + 109 ternary compounds.
 
 ```bash
 pip install alphalaw
 python -m alphalaw C C
 python -m alphalaw --table
-python -m pytest alphalaw/tests/ -v
 ```
+
+## Predictions (testable 2027–2030)
+
+| Prediction | Value | Experiment |
+|---|---|---|
+| m_p/m_e 9th digit | 1836.152690 ± 1 | CODATA 2027 |
+| Neutrino Σm | 77 meV | CMB-S4 (~2030) |
+| Neutrino hierarchy | Normal | JUNO, DUNE |
 
 ## Read the Paper
 

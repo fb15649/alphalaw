@@ -234,7 +234,22 @@ The toroidal vortex model:
 6. **Independently confirmed** (Clifford torus 2026, Kosmoplex 2025, Butto 2024)
 7. **Makes 5 testable predictions** for 2027-2030
 
-The goal is not to disprove the Standard Model, but to show that behind 19 fitted parameters lies simple geometry. Nature does not invent 19 numbers. It uses one building block (vortex) and one number (π). That is enough.
+### One law from quarks to crystals
+
+The formula E(n) = E₁ × n^(α + β·ln n) describes both scales:
+
+| Scale | n = | α | β | Example |
+|---|---|---|---|---|
+| Nuclear | vortex count | 10.2 | −3.1 | electron → pion → proton |
+| Chemical | bond order | 0.5–1.8 | ~0 | single → double → triple |
+
+Predictions for n = 4, 5: D_s meson (0.5%), Ξ_c baryon (1.3%).
+
+Stability law: 1 vortex = stable. 2 = unstable (all mesons decay). 3 = stable (proton: > 10³⁴ years). Minimum stability = 3 (tripod principle, braid group B₃).
+
+There is no boundary between "proton", "electron", and "molecule" — only N vortices. Names are human labels for different scales of the same physics.
+
+Nature does not invent 19 parameters. It uses one building block (vortex) and one number (π). That is enough.
 
 ---
 
