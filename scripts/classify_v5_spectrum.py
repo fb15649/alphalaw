@@ -79,37 +79,66 @@ def classify(formula):
     a_min = min(all_alphas.values()) if all_alphas else None
     a_max = max(all_alphas.values()) if all_alphas else None
 
-    # Group 16 = chalcogens (O, S, Se, Te) — act as "shell" in hedgehog
     SHELL_ELEMS = HALOGENS | {"O", "S"}
+    NOBLE = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}
+
+    # ── FIX 5: homonuclear single-element (N2, O2, I2, S8, Fe, Cu) ──
+    if len(elements) == 1:
+        e = elements[0]
+        # Metals = always crystal as pure element
+        if e in METALS:
+            return "crystal", "pure_metal", 0.3
+        b = get_bond_data(e, e)
+        if b and b.alpha is not None:
+            a = b.alpha
+            # Group 15 heavy (P, As, Sb, Bi) have α>1 but are solid at STP
+            p = PERIOD.get(e, 3)
+            if a > 1.0 and p >= 3:
+                return "border", f"homonuclear(α={a:.2f},P{p})", a
+            if a > 1.0:
+                return "liquid", f"homonuclear(α={a:.2f})", a
+            return "border", f"homonuclear(α={a:.2f})", a
+        if e in NOBLE:
+            return "border", "noble_gas_pure", 1.0
+        return "border", "pure_nonmetal", 0.8
 
     # ── TIER -1: noble gas compounds → always molecular ──
-    NOBLE = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}
     if any(e in NOBLE for e in elements):
         return "border", "noble_gas", 1.0
+
+    # ── FIX 1: metal/actinide hexafluorides = molecular (hedgehog) ──
+    has_any_metal = has_m or any(PERIOD.get(e, 0) >= 7 for e in elements)  # include actinides
+    if has_any_metal and any(e in HALOGENS for e in elements):
+        hal_count = sum(counts.get(h, 0) for h in HALOGENS)
+        non_hal = [e for e in elements if e not in HALOGENS]
+        if len(non_hal) == 1 and hal_count >= 5:
+            return "border", f"metal_hexahalide(n_hal={hal_count})", 1.0
 
     # ── TIER 0: ionic N-oxide (N₂O₅ = NO₂⁺ NO₃⁻) ──
     if all_nm and not has_h and "N" in elements and "O" in elements:
         non_NO = [e for e in elements if e not in ("N", "O")]
-        if not non_NO:  # pure N+O compound
+        if not non_NO:
             n_O = counts.get("O", 0)
             n_N = counts.get("N", 0)
             if n_N > 0 and n_O / n_N >= 2.5:
                 return "crystal", f"ionic_N_oxide(O/N={n_O/n_N:.1f})", 0.5
 
-    # ── TIER 1: hedgehog FIRST (compound-level, not pair-level) ──
+    # ── TIER 1: hedgehog (compound-level) ──
     if all_nm and not has_h:
         center = [e for e in elements if e not in SHELL_ELEMS]
         shell = [e for e in elements if e in SHELL_ELEMS]
         if len(center) <= 1 and len(shell) >= 1:
             cp = max((PERIOD.get(e, 6) for e in center), default=2)
+            # FIX 4: high-valence halides of heavy elements (SbCl5) = molecular
+            shell_count = sum(counts.get(s, 0) for s in shell if s in HALOGENS)
+            if cp >= 5 and shell_count >= 5:
+                return "border", f"heavy_high_valence(P{cp},n={shell_count})", 0.9
             if cp <= 4:
-                # Light hedgehog → molecular (border if α low)
                 a_eff = a_min if a_min else 1.0
                 if a_eff > 0.8:
                     return "liquid", f"hedgehog(P{cp},α={a_eff:.2f})", a_eff
                 return "border", f"hedgehog(P{cp},α={a_eff:.2f})", a_eff
             else:
-                # Heavy hedgehog → crystal
                 if a_min and a_min < 0.8:
                     return "crystal", f"heavy_hedgehog(P{cp})", a_min
 
@@ -136,11 +165,14 @@ def classify(formula):
     if has_h and has_m:
         return "crystal", "H+metal", 0.5
 
-    # ── TIER 4: volatile metal halides ──
+    # ── TIER 4: volatile metal halides (FIX 2: only high-valence, hal/metal ≥ 4) ──
     if has_m and any(e in HALOGENS for e in elements):
         non_hal = [e for e in elements if e not in HALOGENS]
+        hal_count = sum(counts.get(h, 0) for h in HALOGENS)
+        metal_count = sum(counts.get(m, 0) for m in non_hal if m in METALS)
         if len(non_hal) == 1 and non_hal[0] in ("Ti", "Zr", "Hf", "Sn"):
-            return "liquid", "volatile_halide", 1.1
+            if metal_count > 0 and hal_count / metal_count >= 4:
+                return "liquid", f"volatile_halide(hal/m={hal_count}/{metal_count})", 1.1
 
     # ── TIER 5: metal present ──
     if has_m:
